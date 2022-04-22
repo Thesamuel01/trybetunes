@@ -34,7 +34,7 @@ class Header extends Component {
         <div>
           <span data-testid="header-user-name">{ userName }</span>
         </div>
-        <nav data-testid="header-component">
+        <nav>
           <Link
             to="/search"
             data-testid="link-to-search"
