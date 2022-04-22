@@ -34,7 +34,7 @@ class Search extends Component {
     });
   }
 
-  getArtist = () => {
+  getAlbums = () => {
     const { inputValue } = this.state;
 
     this.setState(({ inputValue: input }) => ({
@@ -96,7 +96,7 @@ class Search extends Component {
             data-testid="search-artist-button"
             type="button"
             disabled={ isButtonDisabled }
-            onClick={ this.getArtist }
+            onClick={ this.getAlbums }
           >
             Pesquisar
           </button>

@@ -45,13 +45,13 @@ class Header extends Component {
             to="/favorites"
             data-testid="link-to-favorites"
           >
-            Pesquisa
+            Favoritas
           </Link>
           <Link
             to="/profile"
             data-testid="link-to-profile"
           >
-            Pesquisa
+            Perfil
           </Link>
         </nav>
       </div>
