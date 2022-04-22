@@ -60,12 +60,6 @@ class Header extends Component {
     return (
       <header data-testid="header-component">
         {loading ? <Loading /> : headerElements}
-        <div>
-          <input type="text" />
-          <button type="button">
-            Search
-          </button>
-        </div>
       </header>
     );
   }
