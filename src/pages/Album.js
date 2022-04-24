@@ -13,6 +13,7 @@ class Album extends Component {
       loading: true,
       artistMusics: [],
       requisitionEnds: false,
+      checkedInputs: [],
     };
   }
 
@@ -36,7 +37,7 @@ class Album extends Component {
   }
 
   renderTracks = () => {
-    const { artistMusics: [artistInfo, ...tracks] } = this.state;
+    const { artistMusics: [artistInfo, ...tracks], checkedInputs } = this.state;
     const { artworkUrl100, artistName, collectionName } = artistInfo;
 
     const tracksElements = (
@@ -50,11 +51,12 @@ class Album extends Component {
           <p data-testid="artist-name">{artistName}</p>
         </div>
         <ul>
-          {tracks.map(({ trackId, trackName, previewUrl }) => (
+          {tracks.map((song) => (
             <MusicCard
-              key={ trackId }
-              trackName={ trackName }
-              previewUrl={ previewUrl }
+              key={ song.trackId }
+              checkedInputs={ checkedInputs }
+              track={ song }
+              favoriteFunc={ this.addFavorite }
             />
           ))}
         </ul>
@@ -64,14 +66,33 @@ class Album extends Component {
     return tracksElements;
   }
 
+  addFavorite = (track, callback) => {
+    this.setState(({ checkedInputs }) => {
+      const { trackId } = track;
+      const isToRemove = checkedInputs.some((id) => id === trackId);
+      const newArray = isToRemove
+        ? checkedInputs.filter((id) => id !== trackId) : [...checkedInputs, trackId];
+
+      return ({
+        checkedInputs: [...newArray],
+        loading: true,
+      });
+    }, async () => {
+      await callback(track);
+
+      this.setState({
+        loading: false,
+      });
+    });
+  }
+
   render() {
     const { requisitionEnds, loading } = this.state;
 
     return (
       <div data-testid="page-album">
         <Header />
-        {loading && <Loading />}
-        {requisitionEnds && this.renderTracks()}
+        {loading ? <Loading /> : (requisitionEnds && this.renderTracks())}
       </div>
     );
   }
