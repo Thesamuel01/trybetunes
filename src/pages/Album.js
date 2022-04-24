@@ -4,6 +4,7 @@ import Header from '../components/Header';
 import getMusics from '../services/musicsAPI';
 import MusicCard from '../components/MusicCard';
 import Loading from '../components/Loading';
+import { getFavoriteSongs } from '../services/favoriteSongsAPI';
 
 class Album extends Component {
   constructor() {
@@ -25,10 +26,13 @@ class Album extends Component {
     const { match: { params: { id } } } = this.props;
 
     const musics = await getMusics(id);
+    const favoriteSongs = await getFavoriteSongs();
+
     this.setState({
       loading: true,
     }, () => {
       this.setState({
+        checkedInputs: [...favoriteSongs.map(({ trackId }) => trackId)],
         artistMusics: [...musics],
         requisitionEnds: true,
         loading: false,
