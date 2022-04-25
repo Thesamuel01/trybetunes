@@ -9,16 +9,6 @@ import ProfileEdit from './pages/ProfileEdit';
 import NotFound from './pages/NotFound';
 
 class App extends React.Component {
-  // constructor() {
-  //   super();
-
-  //   this.state = {
-  //     favoriteSongs: [],
-  //   };
-  // }
-
-  // saveF
-
   render() {
     return (
       <main className="container">

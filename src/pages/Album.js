@@ -60,7 +60,7 @@ class Album extends Component {
               key={ song.trackId }
               checkedInputs={ checkedInputs }
               track={ song }
-              favoriteFunc={ this.addFavorite }
+              favoriteFunc={ this.handleFavoriteSongs }
             />
           ))}
         </ul>
@@ -70,7 +70,7 @@ class Album extends Component {
     return tracksElements;
   }
 
-  addFavorite = (track, callback) => {
+  handleFavoriteSongs = (track, callback) => {
     this.setState(({ checkedInputs }) => {
       const { trackId } = track;
       const isToRemove = checkedInputs.some((id) => id === trackId);
