@@ -6,6 +6,7 @@ class Profile extends Component {
     return (
       <div data-testid="page-profile">
         <Header />
+        {/* Iniciando pagina profile */}
       </div>
     );
   }
