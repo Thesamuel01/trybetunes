@@ -7,7 +7,7 @@ class ProfileEdit extends Component {
     return (
       <div data-testid="page-profile-edit">
         <Header />
-        <ProfileEditInfos />
+        <ProfileEditInfos { ...this.props } />
       </div>
     );
   }
