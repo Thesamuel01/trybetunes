@@ -1,7 +1,11 @@
+import { Button, TextField } from '@mui/material';
+import AccountCircle from '@mui/icons-material/AccountCircle';
+import { Box } from '@mui/system';
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import Loading from '../components/Loading';
 import { createUser } from '../services/userAPI';
+import img from '../images/background-login.jpg';
 
 class Login extends Component {
   /* Trecho baseado nos links abaixo para resolver o warning: memory leak
@@ -43,7 +47,9 @@ class Login extends Component {
     });
   }
 
-  createUserProfile = () => {
+  createUserProfile = (event) => {
+    event.preventDefault();
+
     const { name } = this.state;
 
     this.setState({
@@ -59,38 +65,88 @@ class Login extends Component {
     });
   }
 
-  renderForm = () => {
-    const { isButtonDisabled } = this.state;
-
-    return (
-      <form>
-        <input
-          data-testid="login-name-input"
-          type="text"
-          name="name"
-          placeholder="Name"
-          onChange={ this.handleChange }
-        />
-        <button
-          data-testid="login-submit-button"
-          type="button"
-          disabled={ isButtonDisabled }
-          onClick={ this.createUserProfile }
-        >
-          Entrar
-        </button>
-      </form>
-    );
-  }
-
   render() {
-    const { loading, shouldRedirect } = this.state;
+    const { loading, shouldRedirect, isButtonDisabled } = this.state;
 
     return (
-      <div data-testid="page-login">
-        { loading ? <Loading /> : this.renderForm() }
+      <Box data-testid="page-login">
+        { loading
+          ? <Loading />
+          : (
+            <Box
+              sx={ {
+                display: 'flex',
+                height: '100vh',
+                justifyContent: 'space-between',
+                width: '100vw',
+              } }
+            >
+              <Box
+                sx={ {
+                  display: 'flex',
+                  flexGrow: '2',
+                  height: '110px',
+                  justifyContent: 'center',
+                  margin: 'auto 0',
+                } }
+              >
+                <form
+                  style={ {
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                  } }
+                  onSubmit={ this.createUserProfile }
+                >
+                  <Box
+                    sx={ {
+                      alignItems: 'flex-end',
+                      display: 'flex',
+                      justifyContent: 'center',
+                      margin: '0 auto',
+                      width: 300,
+                    } }
+                  >
+                    <AccountCircle sx={ { color: 'action.active', mr: 1, my: 0.5 } } />
+                    <TextField
+                      id="input-with-sx"
+                      label="Name"
+                      name="name"
+                      fullWidth
+                      variant="standard"
+                      // Trecho baseado no link:
+                      // Link: https://stackoverflow.com/questions/62049553/how-to-use-test-id-in-material-ui-textfield
+                      inputProps={ { 'data-testid': 'login-name-input' } }
+                      onChange={ this.handleChange }
+                    />
+                  </Box>
+                  <Button
+                    color="secondary"
+                    data-testid="login-submit-button"
+                    size="large"
+                    type="submit"
+                    variant="contained"
+                    disabled={ isButtonDisabled }
+                  >
+                    Entrar
+                  </Button>
+                </form>
+              </Box>
+              <Box
+                sx={ {
+                  display: 'inline-block',
+                  backgroundImage: `url(${img})`,
+                  backgroundRepeat: 'no-repeat',
+                  backgroundPosition: 'center',
+                  height: '100%',
+                  width: '70%',
+                } }
+              />
+            </Box>
+          ) }
         { shouldRedirect && <Redirect to="/search" /> }
-      </div>
+      </Box>
     );
   }
 }
