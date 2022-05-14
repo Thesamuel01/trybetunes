@@ -4,9 +4,15 @@ import ProfileInfos from '../components/ProfileInfos';
 
 class Profile extends Component {
   render() {
+    const { headerNavValue, setNavValue, history } = this.props;
+
     return (
       <div data-testid="page-profile">
-        <Header />
+        <Header
+          headerNavValue={ headerNavValue }
+          setNavValue={ setNavValue }
+          history={ history }
+        />
         <ProfileInfos />
       </div>
     );

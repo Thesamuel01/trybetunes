@@ -1,4 +1,6 @@
+import { Box, Button, FormControl, InputAdornment, InputLabel, OutlinedInput, TextField } from '@mui/material';
 import React, { Component } from 'react';
+import SearchIcon from '@mui/icons-material/Search';
 import AlbumCard from '../components/AlbumCard';
 import Header from '../components/Header';
 import Loading from '../components/Loading';
@@ -34,8 +36,10 @@ class Search extends Component {
     });
   }
 
-  getAlbums = () => {
+  getAlbums = (event) => {
+    event.preventDefault();
     const { inputValue } = this.state;
+    console.log(inputValue);
 
     this.setState(({ inputValue: input }) => ({
       loading: true,
@@ -54,55 +58,76 @@ class Search extends Component {
   }
 
   render() {
+    const { headerNavValue, setNavValue, history } = this.props;
     const {
       artistsAlbums, artistSearched, isButtonDisabled,
       inputValue, loading, requisitionEnd,
     } = this.state;
-    const albumsElements = (
-      <section>
-        <h2>{`Resultado de álbuns de: ${artistSearched}`}</h2>
-        { artistsAlbums.length === 0
-          ? <p>Nenhum álbum foi encontrado</p>
-          : (
-            <div>
-              { artistsAlbums.map(
-                ({ artistName, collectionId, collectionName, artworkUrl100 }) => (
-                  <AlbumCard
-                    key={ collectionId }
-                    albumImage={ artworkUrl100 }
-                    albumName={ collectionName }
-                    artistFullName={ artistName }
-                    albumId={ collectionId }
-                  />
-                ),
-              )}
-            </div>
-          )}
-      </section>
-    );
 
     return (
       <div data-testid="page-search">
-        <Header />
-        <section>
-          <input
-            data-testid="search-artist-input"
-            type="text"
-            placeholder="Nome de Artista"
-            value={ inputValue }
-            onChange={ this.handleChange }
-          />
-          <button
-            data-testid="search-artist-button"
-            type="button"
-            disabled={ isButtonDisabled }
-            onClick={ this.getAlbums }
+        <Header
+          headerNavValue={ headerNavValue }
+          setNavValue={ setNavValue }
+          history={ history }
+        />
+        <Box
+          sx={ {
+            display: 'flex',
+            justifyContent: 'center',
+            width: '500px',
+            margin: '2rem auto',
+          } }
+        >
+          <form
+            style={ { width: '100%' } }
+            onSubmit={ this.getAlbums }
           >
-            Pesquisar
-          </button>
-          {loading && <Loading />}
-          {requisitionEnd && albumsElements}
-        </section>
+            <FormControl fullWidth sx={ { m: 1 } }>
+              <InputLabel
+                color="secondary"
+                htmlFor="outlined-adornment-amount"
+              >
+                Nome de Artista
+              </InputLabel>
+              <OutlinedInput
+                color="secondary"
+                id="outlined-adornment-amount"
+                size="small"
+                startAdornment={
+                  <SearchIcon sx={ { color: 'action.active', mr: 1, my: 0.5 } } />
+                }
+                value={ inputValue }
+                onChange={ this.handleChange }
+                label="Nome de Artista"
+              />
+            </FormControl>
+          </form>
+        </Box>
+        {loading && <Loading />}
+        {requisitionEnd
+          && (
+            <section>
+              <h2>{`Resultado de álbuns de: ${artistSearched}`}</h2>
+              { artistsAlbums.length === 0
+                ? <p>Nenhum álbum foi encontrado</p>
+                : (
+                  <div>
+                    { artistsAlbums.map(
+                      ({ artistName, collectionId, collectionName, artworkUrl100 }) => (
+                        <AlbumCard
+                          key={ collectionId }
+                          albumImage={ artworkUrl100 }
+                          albumName={ collectionName }
+                          artistFullName={ artistName }
+                          albumId={ collectionId }
+                        />
+                      ),
+                    )}
+                  </div>
+                )}
+            </section>
+          ) }
       </div>
     );
   }

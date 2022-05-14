@@ -1,5 +1,10 @@
+import { BottomNavigation, BottomNavigationAction } from '@mui/material';
+import { Box } from '@mui/system';
+import SearchIcon from '@mui/icons-material/Search';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { AccountCircle } from '@mui/icons-material';
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import { getUser } from '../services/userAPI';
 import Loading from './Loading';
 
@@ -27,39 +32,64 @@ class Header extends Component {
   }
 
   render() {
+    const { headerNavValue, setNavValue, history } = this.props;
     const { loading, userName } = this.state;
-    const headerElements = (
-      <div>
-        Cabecalho
-        <div>
-          <span data-testid="header-user-name">{ userName }</span>
-        </div>
-        <nav>
-          <Link
-            to="/search"
-            data-testid="link-to-search"
-          >
-            Pesquisa
-          </Link>
-          <Link
-            to="/favorites"
-            data-testid="link-to-favorites"
-          >
-            Favoritas
-          </Link>
-          <Link
-            to="/profile"
-            data-testid="link-to-profile"
-          >
-            Perfil
-          </Link>
-        </nav>
-      </div>
-    );
 
     return (
       <header data-testid="header-component">
-        {loading ? <Loading /> : headerElements}
+        {loading ? <Loading />
+          : (
+            <Box>
+              <Box
+                sx={ {
+                  alignItems: 'center',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  padding: '0.5rem 1.5rem',
+                } }
+              >
+                TrybeTunes
+                <Box
+                  sx={ {
+                    alignItems: 'center',
+                    display: 'flex',
+                    justifyContent: 'flex-end',
+                  } }
+                >
+                  <AccountCircle sx={ { color: 'action.active', mr: 1, my: 0.5 } } />
+                  <span data-testid="header-user-name">{ userName }</span>
+                </Box>
+              </Box>
+              <BottomNavigation
+                showLabels
+                value={ headerNavValue }
+                onChange={ (event, newValue) => {
+                  setNavValue(newValue);
+
+                  history.push(`/${newValue}`);
+                } }
+              >
+                <BottomNavigationAction
+                  data-testid="link-to-search"
+                  label="Pesquisa"
+                  value="search"
+                  icon={ <SearchIcon /> }
+                />
+                <BottomNavigationAction
+                  data-testid="link-to-favorites"
+                  label="Favoritas"
+                  value="favorites"
+                  icon={ <FavoriteIcon /> }
+                />
+                <BottomNavigationAction
+                  data-testid="link-to-favorites"
+                  label="Perfil"
+                  value="profile"
+                  icon={ <AccountCircleIcon /> }
+                />
+              </BottomNavigation>
+            </Box>
+          ) }
       </header>
     );
   }

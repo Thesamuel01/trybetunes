@@ -56,25 +56,30 @@ class Favorites extends Component {
   }
 
   render() {
+    const { headerNavValue, setNavValue, history } = this.props;
     const { songsSaved, checkedInputs, loading } = this.state;
-    const favoriteElement = (
-      <section>
-        <h1>Músicas favoritas:</h1>
-        {songsSaved.map((track) => (
-          <MusicCard
-            key={ track.trackId }
-            checkedInputs={ checkedInputs }
-            track={ track }
-            favoriteFunc={ this.handleFavoriteSongs }
-          />
-        ))}
-      </section>
-    );
 
     return (
       <div data-testid="page-favorites">
-        <Header />
-        {loading ? <Loading /> : favoriteElement}
+        <Header
+          headerNavValue={ headerNavValue }
+          setNavValue={ setNavValue }
+          history={ history }
+        />
+        {loading ? <Loading />
+          : (
+            <section>
+              <h1>Músicas favoritas:</h1>
+              {songsSaved.map((track) => (
+                <MusicCard
+                  key={ track.trackId }
+                  checkedInputs={ checkedInputs }
+                  track={ track }
+                  favoriteFunc={ this.handleFavoriteSongs }
+                />
+              ))}
+            </section>
+          ) }
       </div>
     );
   }

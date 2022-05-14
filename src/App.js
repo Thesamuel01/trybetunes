@@ -11,20 +11,86 @@ import NotFound from './pages/NotFound';
 import style from './App.module.css';
 
 class App extends React.Component {
+  constructor() {
+    super();
+
+    this.state = {
+      headerNavValue: 'search',
+    };
+  }
+
+  setNavValue = (newValue) => {
+    this.setState({
+      headerNavValue: newValue,
+    });
+  }
+
   render() {
+    const { headerNavValue } = this.state;
+
     return (
       <ScopedCssBaseline>
         <main className={ style.container }>
           <Switch>
-            <Route exact path="/" component={ Login } />
-            <Route exact path="/search" component={ Search } />
-            <Route exact path="/album/:id" render={ (props) => <Album { ...props } /> } />
-            <Route exact path="/favorites" component={ Favorites } />
-            <Route exact path="/profile" component={ Profile } />
+            <Route
+              exact
+              path="/"
+              render={ (props) => <Login { ...props } /> }
+            />
+            <Route
+              exact
+              path="/search"
+              render={ (props) => (
+                <Search
+                  { ...props }
+                  headerNavValue={ headerNavValue }
+                  setNavValue={ this.setNavValue }
+                />
+              ) }
+            />
+            <Route
+              exact
+              path="/album/:id"
+              render={ (props) => (
+                <Album
+                  { ...props }
+                  headerNavValue={ headerNavValue }
+                  setNavValue={ this.setNavValue }
+                />
+              ) }
+            />
+            <Route
+              exact
+              path="/favorites"
+              render={ (props) => (
+                <Favorites
+                  { ...props }
+                  headerNavValue={ headerNavValue }
+                  setNavValue={ this.setNavValue }
+                />
+              ) }
+            />
+            <Route
+              exact
+              path="/profile"
+              render={ (props) => (
+                <Profile
+                  { ...props }
+                  headerNavValue={ headerNavValue }
+                  setNavValue={ this.setNavValue }
+                />
+              ) }
+            />
             <Route
               exact
               path="/profile/edit"
-              render={ (props) => <ProfileEdit { ...props } /> }
+              render={ (props) => (
+                <ProfileEdit
+                  { ...props }
+                  headerNavValue={ headerNavValue }
+                  setNavValue={ this.setNavValue }
+                />
+              ) }
             />
             <Route path="*" component={ NotFound } />
           </Switch>
