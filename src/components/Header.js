@@ -63,10 +63,17 @@ class Header extends Component {
               <BottomNavigation
                 showLabels
                 value={ headerNavValue }
-                onChange={ (event, newValue) => {
+                onChange={ (_, newValue) => {
                   setNavValue(newValue);
 
                   history.push(`/${newValue}`);
+                } }
+                sx= { {
+                  '& .Mui-selected': {
+                    '& .MuiSvgIcon-root, & .MuiBottomNavigationAction-label': {
+                      color: theme => theme.palette.secondary.main
+                    }
+                  }
                 } }
               >
                 <BottomNavigationAction

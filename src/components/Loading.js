@@ -7,7 +7,7 @@ class Loading extends Component {
     return (
       <Container>
         <p hidden>Carregando...</p>
-        <Box sx={ { display: 'flex' } }>
+        <Box sx={ { display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100px' } }>
           <CircularProgress color="secondary" />
         </Box>
       </Container>
