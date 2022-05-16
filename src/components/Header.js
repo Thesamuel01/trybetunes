@@ -68,12 +68,12 @@ class Header extends Component {
 
                   history.push(`/${newValue}`);
                 } }
-                sx= { {
+                sx={ {
                   '& .Mui-selected': {
                     '& .MuiSvgIcon-root, & .MuiBottomNavigationAction-label': {
-                      color: theme => theme.palette.secondary.main
-                    }
-                  }
+                      color: (theme) => theme.palette.secondary.main,
+                    },
+                  },
                 } }
               >
                 <BottomNavigationAction
