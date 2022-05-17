@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Grid, List, Typography } from '@mui/material';
 import Header from '../components/Header';
 import getMusics from '../services/musicsAPI';
 import MusicCard from '../components/MusicCard';
 import Loading from '../components/Loading';
 import { getFavoriteSongs } from '../services/favoriteSongsAPI';
+import { Box, width } from '@mui/system';
 
 class Album extends Component {
   constructor() {
@@ -45,26 +47,85 @@ class Album extends Component {
     const { artworkUrl100, artistName, collectionName } = artistInfo;
 
     const tracksElements = (
-      <section>
-        <div>
+      <Grid
+        container
+        justifyContent="center"
+        sx={ {
+          margin: '5rem auto 0 auto',
+        } }
+      >
+        <Grid
+          item
+          container
+          direction="column"
+          alignItems="center"
+          xl={ 4 }
+          sx={ {
+            minHeight: 360,
+            minWidth: 300,
+            marginBottom: '2rem',
+          } }
+        >
           <img
             src={ artworkUrl100 }
             alt={ `Foto album ${collectionName} da cantor ${artistName}` }
+            style={ {
+              minWidth: 300,
+            } }
           />
-          <h2 data-testid="album-name">{collectionName}</h2>
-          <p data-testid="artist-name">{artistName}</p>
-        </div>
-        <ul>
-          {tracks.map((song) => (
-            <MusicCard
-              key={ song.trackId }
-              checkedInputs={ checkedInputs }
-              track={ song }
-              favoriteFunc={ this.handleFavoriteSongs }
-            />
-          ))}
-        </ul>
-      </section>
+          <Typography
+            gutterBottom
+            variant="h2"
+            component="div"
+            sx={ {
+              fontWeight: 600,
+              fontSize: '2rem',
+              margin: '1rem 0',
+            } }
+          >
+            {collectionName}
+          </Typography>
+          <Typography
+            variant="body1"
+            color="text.secondary"
+            sx={ {
+              margin: '.6rem 0',
+            } }
+          >
+            {artistName}
+          </Typography>
+        </Grid>
+        <Grid
+          item
+          container
+          justifyContent="center"
+          xl={ 4 }
+          sx={ {
+            width: '80%',
+            minWidth: 350,
+          } }
+        >
+          <List
+            sx={ {
+              width: '100%',
+              bgcolor: 'background.paper',
+              position: 'relative',
+              overflow: 'auto',
+              maxHeight: 500,
+              '& ul': { padding: 0 },
+            } }
+          >
+            {tracks.map((song) => (
+              <MusicCard
+                key={ song.trackId }
+                checkedInputs={ checkedInputs }
+                track={ song }
+                favoriteFunc={ this.handleFavoriteSongs }
+              />
+            ))}
+          </List>
+        </Grid>
+      </Grid>
     );
 
     return tracksElements;

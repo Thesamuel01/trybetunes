@@ -1,4 +1,4 @@
-import { BottomNavigation, BottomNavigationAction } from '@mui/material';
+import { Avatar, BottomNavigation, BottomNavigationAction, Chip, Stack } from '@mui/material';
 import { Box } from '@mui/system';
 import SearchIcon from '@mui/icons-material/Search';
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -56,8 +56,12 @@ class Header extends Component {
                     justifyContent: 'flex-end',
                   } }
                 >
-                  <AccountCircle sx={ { color: 'action.active', mr: 1, my: 0.5 } } />
-                  <span data-testid="header-user-name">{ userName }</span>
+                  <Stack direction="row" spacing={ 1 }>
+                    <Chip
+                      avatar={ <Avatar>{userName[0].toUpperCase()}</Avatar> }
+                      label={ userName }
+                    />
+                  </Stack>
                 </Box>
               </Box>
               <BottomNavigation

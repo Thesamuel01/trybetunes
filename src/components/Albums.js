@@ -1,4 +1,4 @@
-import { Grid } from '@mui/material';
+import { Grid, Grow } from '@mui/material';
 import PropTypes from 'prop-types';
 import { Box } from '@mui/system';
 import React, { Component } from 'react';
@@ -6,7 +6,7 @@ import AlbumCard from './AlbumCard';
 
 class Albums extends Component {
   render() {
-    const { artistsAlbums, artistSearched } = this.props;
+    const { artistsAlbums, artistSearched, requisitionEnd } = this.props;
 
     return (
       <section>
@@ -18,25 +18,32 @@ class Albums extends Component {
               <Grid container spacing={ 2 }>
                 { artistsAlbums.map(
                   ({ artistName, collectionId, collectionName, artworkUrl100 }) => (
-                    <Grid
+                    <Grow
                       key={ collectionId }
-                      container
-                      item
-                      justifyContent="center"
-                      xs={ 12 }
-                      sm={ 6 }
-                      md={ 4 }
-                      lg={ 3 }
-                      xl={ 2 }
+                      in={ requisitionEnd }
+                      style={ { transformOrigin: '0 0 0' } }
+                      { ...(requisitionEnd ? { timeout: 1000 } : {}) }
                     >
-                      <AlbumCard
+                      <Grid
                         key={ collectionId }
-                        albumImage={ artworkUrl100 }
-                        albumName={ collectionName }
-                        artistFullName={ artistName }
-                        albumId={ collectionId }
-                      />
-                    </Grid>
+                        container
+                        item
+                        justifyContent="center"
+                        xs={ 12 }
+                        sm={ 6 }
+                        md={ 4 }
+                        lg={ 3 }
+                        xl={ 2 }
+                      >
+                        <AlbumCard
+                          key={ collectionId }
+                          albumImage={ artworkUrl100 }
+                          albumName={ collectionName }
+                          artistFullName={ artistName }
+                          albumId={ collectionId }
+                        />
+                      </Grid>
+                    </Grow>
                   ),
                 )}
               </Grid>

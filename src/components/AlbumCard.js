@@ -13,10 +13,10 @@ class AlbumCard extends Component {
           <Link
             to={ `/album/${albumId}` }
             data-testid={ `link-to-album-${albumId}` }
-            style={{ 
+            style={ {
               textDecoration: 'none',
               color: '#121212',
-            }}
+            } }
           >
             <CardMedia
               component="img"
@@ -25,23 +25,23 @@ class AlbumCard extends Component {
               alt={ `Imagem do album: ${albumName}` }
             />
             <CardContent sx={ { height: 200 } }>
-                <Typography
-                  gutterBottom
-                  variant="h5"
-                  component="div"
-                  sx={ { 
-                    fontWeight: 600,
-                    fontSize: '1.1rem',
-                  } }
-                >
-                  {albumName}
-                </Typography>
-                <Typography
-                  variant="body2"
-                  color="text.secondary"
-                  >
-                  {artistFullName}
-                </Typography>
+              <Typography
+                gutterBottom
+                variant="h5"
+                component="div"
+                sx={ {
+                  fontWeight: 600,
+                  fontSize: '1.1rem',
+                } }
+              >
+                {albumName}
+              </Typography>
+              <Typography
+                variant="body2"
+                color="text.secondary"
+              >
+                {artistFullName}
+              </Typography>
             </CardContent>
           </Link>
         </CardActionArea>

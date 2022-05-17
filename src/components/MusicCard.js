@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Checkbox, ListItem, ListItemText } from '@mui/material';
+import { Favorite, FavoriteBorder } from '@mui/icons-material';
 import { addSong, removeSong } from '../services/favoriteSongsAPI';
 
 class MusicCard extends Component {
@@ -17,26 +19,24 @@ class MusicCard extends Component {
     const { track: { trackId, trackName, previewUrl }, checkedInputs } = this.props;
 
     return (
-      <li>
-        <p>{ trackName }</p>
+      <ListItem>
+        <ListItemText primary={ trackName } />
         <audio data-testid="audio-component" src={ previewUrl } controls>
           <track kind="captions" />
           O seu navegador não suporta o elemento
           <code>audio</code>
           .
         </audio>
-        <label htmlFor={ `${trackId}` }>
-          Favorita
-          <input
-            data-testid={ `checkbox-music-${trackId}` }
-            checked={ checkedInputs.some((id) => id === trackId) }
-            id={ `${trackId}` }
-            name="favorite"
-            type="checkbox"
-            onChange={ this.handleCheckbox }
-          />
-        </label>
-      </li>
+        <Checkbox
+          color="error"
+          id={ `${trackId}` }
+          inputProps={ { name: 'favorite' } }
+          icon={ <FavoriteBorder /> }
+          checkedIcon={ <Favorite /> }
+          checked={ checkedInputs.some((id) => id === trackId) }
+          onChange={ this.handleCheckbox }
+        />
+      </ListItem>
     );
   }
 }

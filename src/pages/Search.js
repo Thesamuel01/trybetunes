@@ -1,7 +1,6 @@
-import { Box, FormControl, Grid, InputLabel, OutlinedInput } from '@mui/material';
+import { Box, FormControl, InputLabel, OutlinedInput } from '@mui/material';
 import React, { Component } from 'react';
 import SearchIcon from '@mui/icons-material/Search';
-import AlbumCard from '../components/AlbumCard';
 import Header from '../components/Header';
 import searchAlbumsAPI from '../services/searchAlbumsAPI';
 import SkeletonAlbums from '../components/SkeletonAlbums';
@@ -39,7 +38,7 @@ class Search extends Component {
       requisitionEnd: false,
     }), async () => {
       const albums = await searchAlbumsAPI(inputValue);
-  
+
       this.setState({
         artistsAlbums: [...albums],
         loading: false,
@@ -102,6 +101,7 @@ class Search extends Component {
             <Albums
               artistsAlbums={ artistsAlbums }
               artistSearched={ artistSearched }
+              requisitionEnd={ requisitionEnd }
             />
           )}
       </div>
