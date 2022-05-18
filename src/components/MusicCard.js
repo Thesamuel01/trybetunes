@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Checkbox, ListItem, ListItemText } from '@mui/material';
 import { Favorite, FavoriteBorder } from '@mui/icons-material';
 import { addSong, removeSong } from '../services/favoriteSongsAPI';
+import { Box } from '@mui/system';
 
 class MusicCard extends Component {
   handleCheckbox = ({ target }) => {
@@ -16,10 +17,17 @@ class MusicCard extends Component {
   };
 
   render() {
-    const { track: { trackId, trackName, previewUrl }, checkedInputs } = this.props;
-
+    const { track: { trackId, trackName, previewUrl, artworkUrl60 }, checkedInputs } = this.props;
+    console.log(this.props.track);
     return (
       <ListItem>
+        <Box
+          sx={ {
+            marginRight: '1rem',
+          } }
+        >
+          <img src={ artworkUrl60 } alt={ `Imagem do album ${trackName}` } />
+        </Box>
         <ListItemText primary={ trackName } />
         <audio data-testid="audio-component" src={ previewUrl } controls>
           <track kind="captions" />

@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Grid, List, Typography } from '@mui/material';
+import { Divider, Grid, List, Stack, Typography } from '@mui/material';
 import Header from '../components/Header';
 import getMusics from '../services/musicsAPI';
 import MusicCard from '../components/MusicCard';
 import Loading from '../components/Loading';
 import { getFavoriteSongs } from '../services/favoriteSongsAPI';
-import { Box, width } from '@mui/system';
+import MusicList from '../components/MusicList';
 
 class Album extends Component {
   constructor() {
@@ -105,25 +105,11 @@ class Album extends Component {
             minWidth: 350,
           } }
         >
-          <List
-            sx={ {
-              width: '100%',
-              bgcolor: 'background.paper',
-              position: 'relative',
-              overflow: 'auto',
-              maxHeight: 500,
-              '& ul': { padding: 0 },
-            } }
-          >
-            {tracks.map((song) => (
-              <MusicCard
-                key={ song.trackId }
-                checkedInputs={ checkedInputs }
-                track={ song }
-                favoriteFunc={ this.handleFavoriteSongs }
-              />
-            ))}
-          </List>
+          <MusicList
+            tracks={ tracks }
+            checkedInputs={ checkedInputs }
+            handleFavoriteSongs={ this.handleFavoriteSongs }
+          />
         </Grid>
       </Grid>
     );

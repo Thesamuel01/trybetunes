@@ -1,3 +1,5 @@
+import { Divider, List, Stack } from '@mui/material';
+import { Box } from '@mui/system';
 import React, { Component } from 'react';
 import Header from '../components/Header';
 import Loading from '../components/Loading';
@@ -60,27 +62,36 @@ class Favorites extends Component {
     const { songsSaved, checkedInputs, loading } = this.state;
 
     return (
-      <div data-testid="page-favorites">
+      <section>
         <Header
           headerNavValue={ headerNavValue }
           setNavValue={ setNavValue }
           history={ history }
         />
-        {loading ? <Loading />
-          : (
-            <section>
-              <h1>Músicas favoritas:</h1>
-              {songsSaved.map((track) => (
-                <MusicCard
-                  key={ track.trackId }
-                  checkedInputs={ checkedInputs }
-                  track={ track }
-                  favoriteFunc={ this.handleFavoriteSongs }
-                />
-              ))}
-            </section>
-          ) }
-      </div>
+        <Box sx={ { padding: '0 2rem' } }>
+          {loading ? <Loading />
+            : (
+              <div>
+                <h1>Músicas favoritas:</h1>
+                <List>
+                  <Stack
+                    direction="column"
+                    divider={ <Divider orientation="horizontal" flexItem /> }
+                  >
+                    {songsSaved.map((track) => (
+                      <MusicCard
+                        key={ track.trackId }
+                        checkedInputs={ checkedInputs }
+                        track={ track }
+                        favoriteFunc={ this.handleFavoriteSongs }
+                      />
+                    ))}
+                  </Stack>
+                </List>
+              </div>
+            ) }
+        </Box>
+      </section>
     );
   }
 }

@@ -8,7 +8,7 @@ class AlbumCard extends Component {
     const { albumImage, albumName, artistFullName, albumId } = this.props;
 
     return (
-      <Card sx={{ width: 300, height: 500 }}>
+      <Card sx={ { width: 300, height: 500 } }>
         <CardActionArea>
           <Link
             to={ `/album/${albumId}` }
@@ -28,6 +28,7 @@ class AlbumCard extends Component {
               <Typography
                 gutterBottom
                 variant="h5"
+                color="text.primary"
                 component="div"
                 sx={ {
                   fontWeight: 600,
