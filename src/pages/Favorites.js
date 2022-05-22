@@ -1,4 +1,4 @@
-import { Divider, List, Stack } from '@mui/material';
+import { Divider, List, ListItem, Stack } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { Component } from 'react';
 import Header from '../components/Header';
@@ -58,14 +58,12 @@ class Favorites extends Component {
   }
 
   render() {
-    const { headerNavValue, setNavValue, history } = this.props;
+    const { history } = this.props;
     const { songsSaved, checkedInputs, loading } = this.state;
 
     return (
       <section>
         <Header
-          headerNavValue={ headerNavValue }
-          setNavValue={ setNavValue }
           history={ history }
         />
         <Box sx={ { padding: '0 2rem' } }>
@@ -74,19 +72,14 @@ class Favorites extends Component {
               <div>
                 <h1>Músicas favoritas:</h1>
                 <List>
-                  <Stack
-                    direction="column"
-                    divider={ <Divider orientation="horizontal" flexItem /> }
-                  >
-                    {songsSaved.map((track) => (
-                      <MusicCard
-                        key={ track.trackId }
-                        checkedInputs={ checkedInputs }
-                        track={ track }
-                        favoriteFunc={ this.handleFavoriteSongs }
-                      />
-                    ))}
-                  </Stack>
+                  {songsSaved.map((track) => (
+                    <MusicCard
+                      key={ track.trackId }
+                      checkedInputs={ checkedInputs }
+                      track={ track }
+                      favoriteFunc={ this.handleFavoriteSongs }
+                    />
+                  ))}
                 </List>
               </div>
             ) }

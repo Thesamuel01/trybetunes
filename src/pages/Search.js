@@ -48,7 +48,7 @@ class Search extends Component {
   }
 
   render() {
-    const { headerNavValue, setNavValue, history } = this.props;
+    const { history } = this.props;
     const {
       artistsAlbums, artistSearched,
       inputValue, loading, requisitionEnd,
@@ -57,8 +57,6 @@ class Search extends Component {
     return (
       <div data-testid="page-search">
         <Header
-          headerNavValue={ headerNavValue }
-          setNavValue={ setNavValue }
           history={ history }
         />
         <Box

@@ -1,5 +1,5 @@
+import { Avatar, Box, Button, Card, CardContent, Typography } from '@mui/material';
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import { getUser } from '../services/userAPI';
 import Loading from './Loading';
 
@@ -32,32 +32,96 @@ class ProfileInfos extends Component {
     const { name, description, email, image, finishRender } = this.state;
 
     return (
-      <section>
-        {finishRender
-          ? (
-            <div>
-              <div>
-                <img
-                  data-testid="profile-image"
-                  src={ image }
-                  alt={ `Imagem de ${name}` }
-                />
-                <Link
-                  to="/profile/edit"
+      <Box
+        sx={ {
+          display: 'flex',
+          justifyContent: 'center',
+          height: '100vh',
+        } }
+      >
+        <Card
+          variant="outlined"
+          sx={ {
+            padding: '1.5rem',
+            margin: '2rem',
+            width: '30%',
+            height: '60%',
+            maxWidth: '400px',
+            minWidth: '300px',
+          } }
+        >
+          {finishRender
+            ? (
+              <Box
+                sx={ {
+                  height: '100%',
+                } }
+              >
+                <Box
+                  sx={ {
+                    alignItems: 'center',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    marginBottom: '2rem',
+                  } }
                 >
-                  Editar perfil
-                </Link>
-              </div>
-              <h2>Nome</h2>
-              <p>{ name }</p>
-              <h2>E-mail</h2>
-              <p>{ email }</p>
-              <h2>Descrição</h2>
-              <p>{ description }</p>
-            </div>
-          )
-          : <Loading /> }
-      </section>
+                  <Avatar
+                    alt={ name }
+                    src={ image }
+                    sx={ {
+                      height: '80px',
+                      width: '80px',
+                    } }
+                  />
+                  <Button
+                    variant="outlined"
+                    color="secondary"
+                    href="/profile/edit"
+                  >
+                    Editar perfil
+                  </Button>
+                </Box>
+                <CardContent>
+                  <Typography variant="h5" component="div" gutterBottom>
+                    Nome
+                  </Typography>
+                  <Typography
+                    variant="body1"
+                    sx={ {
+                      marginBottom: '2rem',
+                    } }
+                  >
+                    { name }
+                  </Typography>
+                  <Typography variant="h5" component="div" gutterBottom>
+                    E-mail
+                  </Typography>
+                  <Typography
+                    variant="body1"
+                    sx={ {
+                      marginBottom: '2rem',
+                    } }
+                  >
+                    { email === '' ? '-' : email }
+                  </Typography>
+                  <Typography variant="h5" component="div" gutterBottom>
+                    Descrição
+                  </Typography>
+                  <Typography
+                    color="text.secondary"
+                    variant="body"
+                    component="p"
+                    align="justify"
+                    sx={ { wordWrap: 'break-word' } }
+                  >
+                    { description === '' ? '-' : description }
+                  </Typography>
+                </CardContent>
+              </Box>
+            )
+            : <Loading /> }
+        </Card>
+      </Box>
     );
   }
 }

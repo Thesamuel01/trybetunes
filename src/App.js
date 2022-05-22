@@ -15,7 +15,6 @@ class App extends React.Component {
     super();
 
     this.state = {
-      headerNavValue: 'search',
       theme: createTheme({
         palette: {
           mode: 'dark',
@@ -24,14 +23,8 @@ class App extends React.Component {
     };
   }
 
-  setNavValue = (newValue) => {
-    this.setState({
-      headerNavValue: newValue,
-    });
-  }
-
   render() {
-    const { headerNavValue, theme } = this.state;
+    const { theme } = this.state;
 
     return (
       <ThemeProvider theme={ theme }>
@@ -49,8 +42,6 @@ class App extends React.Component {
                 render={ (props) => (
                   <Search
                     { ...props }
-                    headerNavValue={ headerNavValue }
-                    setNavValue={ this.setNavValue }
                   />
                 ) }
               />
@@ -60,8 +51,6 @@ class App extends React.Component {
                 render={ (props) => (
                   <Album
                     { ...props }
-                    headerNavValue={ headerNavValue }
-                    setNavValue={ this.setNavValue }
                   />
                 ) }
               />
@@ -71,8 +60,6 @@ class App extends React.Component {
                 render={ (props) => (
                   <Favorites
                     { ...props }
-                    headerNavValue={ headerNavValue }
-                    setNavValue={ this.setNavValue }
                   />
                 ) }
               />
@@ -82,8 +69,6 @@ class App extends React.Component {
                 render={ (props) => (
                   <Profile
                     { ...props }
-                    headerNavValue={ headerNavValue }
-                    setNavValue={ this.setNavValue }
                   />
                 ) }
               />
@@ -93,8 +78,6 @@ class App extends React.Component {
                 render={ (props) => (
                   <ProfileEdit
                     { ...props }
-                    headerNavValue={ headerNavValue }
-                    setNavValue={ this.setNavValue }
                   />
                 ) }
               />

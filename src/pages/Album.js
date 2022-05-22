@@ -138,14 +138,12 @@ class Album extends Component {
   }
 
   render() {
-    const { headerNavValue, setNavValue, history } = this.props;
+    const { history } = this.props;
     const { requisitionEnds, loading } = this.state;
 
     return (
       <div data-testid="page-album">
         <Header
-          headerNavValue={ headerNavValue }
-          setNavValue={ setNavValue }
           history={ history }
         />
         {loading ? <Loading /> : (requisitionEnds && this.renderTracks())}

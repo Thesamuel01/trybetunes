@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Checkbox, ListItem, ListItemText } from '@mui/material';
 import { Favorite, FavoriteBorder } from '@mui/icons-material';
-import { addSong, removeSong } from '../services/favoriteSongsAPI';
 import { Box } from '@mui/system';
+import { addSong, removeSong } from '../services/favoriteSongsAPI';
 
 class MusicCard extends Component {
   handleCheckbox = ({ target }) => {
@@ -17,10 +17,12 @@ class MusicCard extends Component {
   };
 
   render() {
-    const { track: { trackId, trackName, previewUrl, artworkUrl60 }, checkedInputs } = this.props;
-    console.log(this.props.track);
+    const {
+      track: { trackId, trackName, previewUrl, artworkUrl60 }, checkedInputs,
+    } = this.props;
+
     return (
-      <ListItem>
+      <ListItem button divider>
         <Box
           sx={ {
             marginRight: '1rem',
@@ -54,6 +56,7 @@ MusicCard.propTypes = {
     trackId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
     trackName: PropTypes.string.isRequired,
     previewUrl: PropTypes.string.isRequired,
+    artworkUrl60: PropTypes.string.isRequired,
   }).isRequired,
   favoriteFunc: PropTypes.func.isRequired,
   checkedInputs: PropTypes

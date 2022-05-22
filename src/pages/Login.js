@@ -66,7 +66,7 @@ class Login extends Component {
   }
 
   render() {
-    const { loading, shouldRedirect, isButtonDisabled } = this.state;
+    const { loading, shouldRedirect, isButtonDisabled, name } = this.state;
 
     return (
       <Box data-testid="page-login">
@@ -115,15 +115,12 @@ class Login extends Component {
                       name="name"
                       fullWidth
                       variant="standard"
-                      // Trecho baseado no link:
-                      // Link: https://stackoverflow.com/questions/62049553/how-to-use-test-id-in-material-ui-textfield
-                      inputProps={ { 'data-testid': 'login-name-input' } }
+                      value={ name }
                       onChange={ this.handleChange }
                     />
                   </Box>
                   <Button
                     color="secondary"
-                    data-testid="login-submit-button"
                     size="large"
                     type="submit"
                     variant="contained"
