@@ -5,8 +5,11 @@ import '../index.css';
 class Loading extends Component {
   render() {
     return (
-      <Container>
-        <p hidden>Carregando...</p>
+      <Container
+        sx={ {
+          height: '100%',
+        } }
+      >
         <Box
           sx={ {
             display: 'flex',

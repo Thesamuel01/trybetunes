@@ -1,9 +1,7 @@
-import { AppBar, IconButton, Menu } from '@mui/material';
+import { AppBar } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { Component } from 'react';
-import Brightness4Icon from '@mui/icons-material/Brightness4';
-import Brightness7Icon from '@mui/icons-material/Brightness7';
-import { AccountCircle } from '@mui/icons-material';
+import MenuBar from './MenuBar';
 
 class Bar extends Component {
   render() {
@@ -21,6 +19,7 @@ class Bar extends Component {
               alignItems: 'center',
               display: 'flex',
               justifyContent: 'space-between',
+              paddingLeft: '1rem',
             } }
           >
             TrybeTunes
@@ -30,39 +29,7 @@ class Bar extends Component {
                 label={ userName }
               />
             </Stack> */}
-            <Box>
-              <IconButton sx={ { ml: 1 } } color="inherit">
-                {true ? <Brightness7Icon /> : <Brightness4Icon />}
-              </IconButton>
-              <IconButton
-                size="large"
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                // onClick={handleMenu}
-                color="inherit"
-              >
-                <AccountCircle />
-              </IconButton>
-              <Menu
-                id="menu-appbar"
-                // anchorEl={anchorEl}
-                anchorOrigin={ {
-                  vertical: 'top',
-                  horizontal: 'right',
-                } }
-                keepMounted
-                transformOrigin={ {
-                  vertical: 'top',
-                  horizontal: 'right',
-                } }
-                // open={Boolean(anchorEl)}
-                // onClose={handleClose}
-              >
-                {/* <MenuItem onClick={handleClose}>Profile</MenuItem>
-                <MenuItem onClick={handleClose}>My account</MenuItem> */}
-              </Menu>
-            </Box>
+            <MenuBar />
           </Box>
         </AppBar>
       </Box>
