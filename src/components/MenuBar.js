@@ -6,10 +6,12 @@ import Brightness7Icon from '@mui/icons-material/Brightness7';
 
 class MenuBar extends Component {
   render() {
+    const { toggleColorMode, mode } = this.props;
+
     return (
       <Box>
-        <IconButton sx={ { ml: 1 } } color="inherit">
-          {true ? <Brightness7Icon /> : <Brightness4Icon />}
+        <IconButton sx={ { ml: 1 } } onClick={ toggleColorMode } color="inherit">
+          {mode === 'light' ? <Brightness7Icon /> : <Brightness4Icon />}
         </IconButton>
         <IconButton
           size="large"
@@ -21,9 +23,9 @@ class MenuBar extends Component {
         >
           <AccountCircle />
         </IconButton>
-        <Menu
+        {/* <Menu
           id="menu-appbar"
-          // anchorEl={anchorEl}
+          anchorEl={anchorEl}
           anchorOrigin={ {
             vertical: 'top',
             horizontal: 'right',
@@ -33,12 +35,12 @@ class MenuBar extends Component {
             vertical: 'top',
             horizontal: 'right',
           } }
-          // open={Boolean(anchorEl)}
-          // onClose={handleClose}
+          open={Boolean(anchorEl)}
+          onClose={handleClose}
         >
-          {/* <MenuItem onClick={handleClose}>Profile</MenuItem>
-          <MenuItem onClick={handleClose}>My account</MenuItem> */}
-        </Menu>
+          <MenuItem onClick={handleClose}>Profile</MenuItem>
+          <MenuItem onClick={handleClose}>My account</MenuItem>
+        </Menu> */}
       </Box>
     );
   }

@@ -5,6 +5,8 @@ import MenuBar from './MenuBar';
 
 class Bar extends Component {
   render() {
+    const { toggleColorMode, mode } = this.props;
+
     return (
       <Box
         sx={ {
@@ -13,6 +15,7 @@ class Bar extends Component {
       >
         <AppBar
           position="static"
+          color="secondary"
         >
           <Box
             sx={ {
@@ -29,7 +32,10 @@ class Bar extends Component {
                 label={ userName }
               />
             </Stack> */}
-            <MenuBar />
+            <MenuBar
+              toggleColorMode={ toggleColorMode }
+              mode={ mode }
+            />
           </Box>
         </AppBar>
       </Box>

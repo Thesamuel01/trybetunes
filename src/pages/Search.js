@@ -48,7 +48,7 @@ class Search extends Component {
   }
 
   render() {
-    const { history } = this.props;
+    const { history, toggleColorMode, mode } = this.props;
     const {
       artistsAlbums, artistSearched,
       inputValue, loading, requisitionEnd,
@@ -58,6 +58,8 @@ class Search extends Component {
       <div data-testid="page-search">
         <Header
           history={ history }
+          toggleColorMode={ toggleColorMode }
+          mode={ mode }
         />
         <Box
           sx={ {

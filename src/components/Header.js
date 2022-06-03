@@ -33,7 +33,7 @@ class Header extends Component {
   }
 
   render() {
-    const { history } = this.props;
+    const { history, toggleColorMode, mode } = this.props;
     const { loading, userName } = this.state;
     console.log();
     return (
@@ -41,7 +41,10 @@ class Header extends Component {
         {loading ? <Loading />
           : (
             <Box>
-              <Bar />
+              <Bar
+                toggleColorMode={ toggleColorMode }
+                mode={ mode }
+              />
               <BottomNavigation
                 showLabels
                 value={ history.location.pathname.split('/')[1] }

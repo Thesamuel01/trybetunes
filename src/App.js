@@ -8,7 +8,6 @@ import Favorites from './pages/Favorites';
 import Profile from './pages/Profile';
 import ProfileEdit from './pages/ProfileEdit';
 import NotFound from './pages/NotFound';
-import style from './App.module.css';
 
 class App extends React.Component {
   constructor() {
@@ -17,10 +16,20 @@ class App extends React.Component {
     this.state = {
       theme: createTheme({
         palette: {
-          mode: 'dark',
+          mode: 'light',
         },
       }),
     };
+  }
+
+  toggleColorMode = () => {
+    this.setState(({ theme: { palette: { mode } } }) => ({
+      theme: createTheme({
+        palette: {
+          mode: mode === 'light' ? 'dark' : 'light',
+        },
+      }),
+    }));
   }
 
   render() {
@@ -29,61 +38,39 @@ class App extends React.Component {
     return (
       <ThemeProvider theme={ theme }>
         <CssBaseline>
-          <main className={ style.container }>
-            <Switch>
-              <Route
-                exact
-                path="/"
-                render={ (props) => <Login { ...props } /> }
-              />
-              <Route
-                exact
-                path="/search"
-                render={ (props) => (
-                  <Search
-                    { ...props }
-                  />
-                ) }
-              />
-              <Route
-                exact
-                path="/album/:id"
-                render={ (props) => (
-                  <Album
-                    { ...props }
-                  />
-                ) }
-              />
-              <Route
-                exact
-                path="/favorites"
-                render={ (props) => (
-                  <Favorites
-                    { ...props }
-                  />
-                ) }
-              />
-              <Route
-                exact
-                path="/profile"
-                render={ (props) => (
-                  <Profile
-                    { ...props }
-                  />
-                ) }
-              />
-              <Route
-                exact
-                path="/profile/edit"
-                render={ (props) => (
-                  <ProfileEdit
-                    { ...props }
-                  />
-                ) }
-              />
-              <Route path="*" component={ NotFound } />
-            </Switch>
-          </main>
+          <Switch>
+            <Route
+              exact
+              path="/"
+              component={ Login }
+            />
+            <Route
+              exact
+              path="/search"
+              component={ Search }
+            />
+            <Route
+              exact
+              path="/album/:id"
+              component={ Album }
+            />
+            <Route
+              exact
+              path="/favorites"
+              component={ Favorites }
+            />
+            <Route
+              exact
+              path="/profile"
+              component={ Profile }
+            />
+            <Route
+              exact
+              path="/profile/edit"
+              component={ ProfileEdit }
+            />
+            <Route path="*" component={ NotFound } />
+          </Switch>
         </CssBaseline>
       </ThemeProvider>
     );
