@@ -1,16 +1,19 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
 import { Button, TextField } from '@mui/material';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import { Box } from '@mui/system';
 import Loading from '../components/Loading';
 import img from '../images/background-login.jpg';
-import { fetchUser } from '../redux/userSlice';
+import { fetchUser } from '../redux/features/user/userSlice';
 
-const Login = ({ history, loading }) => {
+const Login = ({ history }) => {
+  const dispatch = useDispatch();
+  const { status } = useSelector((state) => state.user);
+
   const [name, setName] = useState('');
   const [isButtonDisabled, setDisableState] = useState(true);
-  const dispatch = useDispatch();
 
   const handleChange = ({ target }) => {
     const { value } = target;
@@ -23,13 +26,12 @@ const Login = ({ history, loading }) => {
     event.preventDefault();
 
     dispatch(fetchUser({ name }));
-
     history.push('/search');
   };
 
   return (
     <Box data-testid="page-login">
-      { loading
+      { status === 'loading'
         ? <Loading />
         : (
           <Box
@@ -103,6 +105,12 @@ const Login = ({ history, loading }) => {
         ) }
     </Box>
   );
+};
+
+Login.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 export default Login;

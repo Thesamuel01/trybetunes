@@ -1,6 +1,7 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { createTheme, CssBaseline, ThemeProvider } from '@mui/material';
+import { useSelector } from 'react-redux';
+import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
 import Login from './pages/Login';
 import Search from './pages/Search';
 import Album from './pages/Album';
@@ -9,72 +10,53 @@ import Profile from './pages/Profile';
 import ProfileEdit from './pages/ProfileEdit';
 import NotFound from './pages/NotFound';
 
-class App extends React.Component {
-  constructor() {
-    super();
+const App = () => {
+  const mode = useSelector((state) => state.theme.mode);
+  const theme = createTheme({
+    palette: {
+      mode,
+    },
+  });
 
-    this.state = {
-      theme: createTheme({
-        palette: {
-          mode: 'light',
-        },
-      }),
-    };
-  }
-
-  toggleColorMode = () => {
-    this.setState(({ theme: { palette: { mode } } }) => ({
-      theme: createTheme({
-        palette: {
-          mode: mode === 'light' ? 'dark' : 'light',
-        },
-      }),
-    }));
-  }
-
-  render() {
-    const { theme } = this.state;
-
-    return (
-      <ThemeProvider theme={ theme }>
-        <CssBaseline>
-          <Switch>
-            <Route
-              exact
-              path="/"
-              component={ Login }
-            />
-            <Route
-              exact
-              path="/search"
-              component={ Search }
-            />
-            <Route
-              exact
-              path="/album/:id"
-              component={ Album }
-            />
-            <Route
-              exact
-              path="/favorites"
-              component={ Favorites }
-            />
-            <Route
-              exact
-              path="/profile"
-              component={ Profile }
-            />
-            <Route
-              exact
-              path="/profile/edit"
-              component={ ProfileEdit }
-            />
-            <Route path="*" component={ NotFound } />
-          </Switch>
-        </CssBaseline>
-      </ThemeProvider>
-    );
-  }
-}
+  return (
+    <ThemeProvider theme={ theme }>
+      <CssBaseline>
+        <Switch>
+          <Route
+            exact
+            path="/"
+            component={ Login }
+          />
+          <Route
+            exact
+            path="/search"
+            component={ Search }
+          />
+          <Route
+            exact
+            path="/album/:id"
+            component={ Album }
+          />
+          <Route
+            exact
+            path="/favorites"
+            component={ Favorites }
+          />
+          <Route
+            exact
+            path="/profile"
+            component={ Profile }
+          />
+          <Route
+            exact
+            path="/profile/edit"
+            component={ ProfileEdit }
+          />
+          <Route path="*" component={ NotFound } />
+        </Switch>
+      </CssBaseline>
+    </ThemeProvider>
+  );
+};
 
 export default App;

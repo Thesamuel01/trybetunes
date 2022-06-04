@@ -1,9 +1,15 @@
 import { configureStore } from '@reduxjs/toolkit';
-import fetchUsers from './userSlice';
+import user from './features/user/userSlice';
+import theme from './features/theme/themeSlice';
+import album from './features/albums/albumsSlice';
+import music from './features/musics/musicSlice';
 
 const store = configureStore({
   reducer: {
-    user: fetchUsers,
+    user,
+    theme,
+    album,
+    music,
   },
   devTools: true,
 });
