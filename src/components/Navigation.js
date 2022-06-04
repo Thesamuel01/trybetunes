@@ -1,5 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import { BottomNavigation, BottomNavigationAction } from '@mui/material';
 import { Box } from '@mui/system';
 import SearchIcon from '@mui/icons-material/Search';
@@ -52,6 +53,10 @@ const Navigation = ({ loading }) => {
         ) }
     </div>
   );
+};
+
+Navigation.propTypes = {
+  loading: PropTypes.bool.isRequired,
 };
 
 export default Navigation;

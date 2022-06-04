@@ -10,7 +10,7 @@ import Navigation from '../components/Navigation';
 const Search = () => {
   const dispatch = useDispatch();
   const [input, setInput] = useState('');
-  const { status } = useSelector((state) => state.albums);
+  const { status } = useSelector((state) => state.album);
 
   const handleChange = ({ target }) => {
     setInput(target.value);

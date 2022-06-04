@@ -8,6 +8,11 @@ import getMusics from '../../../services/musicsAPI';
 
 const initialState = {
   musics: [],
+  artistInfos: {
+    artworkUrl100: '',
+    artistName: '',
+    collectionName: '',
+  },
   checkedInputs: [],
   status: 'idle',
   error: null,
@@ -17,10 +22,11 @@ export const fetchMusic = createAsyncThunk(
   'music/fetchMusic',
   async (id) => {
     try {
-      const musics = await getMusics(id);
+      const [artistInfo, ...musics] = await getMusics(id);
 
       return {
         musics,
+        artistInfo,
       };
     } catch (error) {
       return error.message;
@@ -40,9 +46,7 @@ export const updateFavoritedSongs = createAsyncThunk(
 
       const favoritedSongs = await getFavoriteSongs();
 
-      return {
-        favoritedSongs,
-      };
+      return favoritedSongs;
     } catch (error) {
       return error.message;
     }
@@ -60,6 +64,7 @@ const musicSlice = createSlice({
       .addCase(fetchMusic.fulfilled, (state, { payload }) => {
         state.status = 'succeeded';
         state.musics = [...payload.musics];
+        state.artistInfos = { ...payload.artistInfo };
       })
       .addCase(fetchMusic.rejected, (state) => {
         state.status = 'failed';

@@ -9,10 +9,9 @@ import { fetchMusic, updateFavoritedSongs } from '../redux/features/musics/music
 
 const Album = ({ match: { params: { id } } }) => {
   const dispatch = useDispatch();
-
-  const { musics, checkedInputs, status } = useSelector((state) => state.music);
-  const { artistMusics: [artistInfo, ...tracks] } = musics;
-  const { artworkUrl100, artistName, collectionName } = artistInfo;
+  const {
+    artistInfos: { artworkUrl100, artistName, collectionName }, status,
+  } = useSelector((state) => state.music);
 
   useEffect(() => {
     dispatch(fetchMusic(id));
@@ -21,7 +20,7 @@ const Album = ({ match: { params: { id } } }) => {
 
   return (
     <div data-testid="page-album">
-      <Navigation />
+      <Navigation loading={ status === 'loading' } />
       {
         status === 'loading'
           ? <Loading />
@@ -47,7 +46,9 @@ const Album = ({ match: { params: { id } } }) => {
               >
                 <img
                   src={ artworkUrl100 }
-                  alt={ `Foto album ${collectionName} da cantor ${artistName}` }
+                  alt={
+                    `Foto album ${collectionName} da cantor ${artistName}`
+                  }
                   style={ {
                     minWidth: 300,
                   } }
@@ -62,7 +63,7 @@ const Album = ({ match: { params: { id } } }) => {
                     margin: '1rem 0',
                   } }
                 >
-                  {collectionName}
+                  { collectionName }
                 </Typography>
                 <Typography
                   variant="body1"
@@ -71,7 +72,7 @@ const Album = ({ match: { params: { id } } }) => {
                     margin: '.6rem 0',
                   } }
                 >
-                  {artistName}
+                  { artistName }
                 </Typography>
               </Grid>
               <Grid
@@ -84,11 +85,7 @@ const Album = ({ match: { params: { id } } }) => {
                   minWidth: 350,
                 } }
               >
-                <MusicList
-                  tracks={ tracks }
-                  checkedInputs={ checkedInputs }
-                  handleFavoriteSongs={ handleFavoriteSongs }
-                />
+                <MusicList />
               </Grid>
             </Grid>
           )

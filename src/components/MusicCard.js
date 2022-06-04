@@ -1,16 +1,15 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Checkbox, ListItem, ListItemText } from '@mui/material';
 import { Favorite, FavoriteBorder } from '@mui/icons-material';
 import { Box } from '@mui/system';
 import { updateFavoritedSongs } from '../redux/features/musics/musicSlice';
 
-const MusicCard = (props) => {
+const MusicCard = ({ track }) => {
   const dispatch = useDispatch();
   const { checkedInputs } = useSelector((state) => state.music);
-  const { track, track: { trackId, trackName, previewUrl, artworkUrl60 } } = props;
-
+  const { trackId, trackName, previewUrl, artworkUrl60 } = track;
   const handleCheckbox = ({ target }) => {
     const action = target.checked ? 'remove' : 'add';
 
