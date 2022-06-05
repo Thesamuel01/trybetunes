@@ -11,6 +11,7 @@ const Search = () => {
   const dispatch = useDispatch();
   const [input, setInput] = useState('');
   const { status } = useSelector((state) => state.album);
+  const { status: fetchUser } = useSelector((state) => state.user);
 
   const handleChange = ({ target }) => {
     setInput(target.value);
@@ -25,7 +26,7 @@ const Search = () => {
 
   return (
     <div data-testid="page-search">
-      <Navigation loading={ status === 'loading' } />
+      <Navigation loading={ fetchUser === 'loading' } />
       <Box
         sx={ {
           display: 'flex',

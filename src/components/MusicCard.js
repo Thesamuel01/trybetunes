@@ -8,40 +8,48 @@ import { updateFavoritedSongs } from '../redux/features/musics/musicSlice';
 
 const MusicCard = ({ track }) => {
   const dispatch = useDispatch();
-  const { checkedInputs } = useSelector((state) => state.music);
+  const { checkedInputs, status } = useSelector((state) => state.music);
   const { trackId, trackName, previewUrl, artworkUrl60 } = track;
-  const handleCheckbox = ({ target }) => {
-    const action = target.checked ? 'remove' : 'add';
 
-    dispatch(updateFavoritedSongs(track, action));
+  const handleCheckbox = ({ target }) => {
+    const action = target.checked ? 'add' : 'remove';
+
+    dispatch(updateFavoritedSongs({ track, action }));
   };
 
   return (
-    <ListItem button divider>
-      <Box
-        sx={ {
-          marginRight: '1rem',
-        } }
-      >
-        <img src={ artworkUrl60 } alt={ `Imagem do album ${trackName}` } />
-      </Box>
-      <ListItemText primary={ trackName } />
-      <audio data-testid="audio-component" src={ previewUrl } controls>
-        <track kind="captions" />
-        O seu navegador não suporta o elemento
-        <code>audio</code>
-        .
-      </audio>
-      <Checkbox
-        color="error"
-        id={ `${trackId}` }
-        inputProps={ { name: 'favorite' } }
-        icon={ <FavoriteBorder /> }
-        checkedIcon={ <Favorite /> }
-        checked={ checkedInputs.some((id) => id === trackId) }
-        onChange={ handleCheckbox }
-      />
-    </ListItem>
+    <Box>
+      {
+        status !== 'loading'
+          && (
+            <ListItem button divider>
+              <Box
+                sx={ {
+                  marginRight: '1rem',
+                } }
+              >
+                <img src={ artworkUrl60 } alt={ `Imagem do album ${trackName}` } />
+              </Box>
+              <ListItemText primary={ trackName } />
+              <audio data-testid="audio-component" src={ previewUrl } controls>
+                <track kind="captions" />
+                O seu navegador não suporta o elemento
+                <code>audio</code>
+                .
+              </audio>
+              <Checkbox
+                color="error"
+                id={ `${trackId}` }
+                inputProps={ { name: 'favorite' } }
+                icon={ <FavoriteBorder /> }
+                checkedIcon={ <Favorite /> }
+                checked={ checkedInputs.some((id) => id === trackId) }
+                onChange={ handleCheckbox }
+              />
+            </ListItem>
+          )
+      }
+    </Box>
   );
 };
 

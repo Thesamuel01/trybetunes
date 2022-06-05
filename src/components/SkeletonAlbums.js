@@ -1,8 +1,8 @@
+import React from 'react';
 import { Box, Grid, Skeleton } from '@mui/material';
-import React, { Component } from 'react';
 
-class SkeletonAlbums extends Component {
-  renderSkeletons = () => {
+const SkeletonAlbums = () => {
+  const renderSkeletons = () => {
     let skeletons = [];
     const NUMBER_OF_SKELETONS = 12;
 
@@ -35,28 +35,26 @@ class SkeletonAlbums extends Component {
     }
 
     return skeletons;
-  }
+  };
 
-  render() {
-    return (
-      <Box sx={ { padding: '0 2rem' } }>
-        <Skeleton
-          animation="wave"
-          variant="rectangular"
-          width="350px"
-          height="36px"
-          sx={ { margin: '1rem 0' } }
-        />
-        <Grid
-          container
-          spacing={ 2 }
-          sx={ { marginTop: 2 } }
-        >
-          {this.renderSkeletons()}
-        </Grid>
-      </Box>
-    );
-  }
-}
+  return (
+    <Box sx={ { padding: '0 2rem' } }>
+      <Skeleton
+        animation="wave"
+        variant="rectangular"
+        width="350px"
+        height="36px"
+        sx={ { margin: '1rem 0' } }
+      />
+      <Grid
+        container
+        spacing={ 2 }
+        sx={ { marginTop: 2 } }
+      >
+        {renderSkeletons()}
+      </Grid>
+    </Box>
+  );
+};
 
 export default SkeletonAlbums;

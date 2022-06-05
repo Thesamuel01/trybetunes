@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { BottomNavigation, BottomNavigationAction } from '@mui/material';
@@ -8,9 +9,18 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Loading from './Loading';
 import Header from './Header';
+import { changePath } from '../redux/features/navigation/navigationSlice';
 
 const Navigation = ({ loading }) => {
+  const dispatch = useDispatch();
   const history = useHistory();
+  const { path } = useSelector((state) => state.navigation);
+
+  useEffect(() => {
+    const { location: { pathname } } = history;
+
+    dispatch(changePath(pathname));
+  }, []);
 
   return (
     <div data-testid="header-component">
@@ -20,7 +30,7 @@ const Navigation = ({ loading }) => {
             <Header />
             <BottomNavigation
               showLabels
-              value={ history.location.pathname.split('/')[1] }
+              value={ path }
               onChange={ (_, newValue) => history.push(`/${newValue}`) }
               sx={ {
                 '& .Mui-selected': {

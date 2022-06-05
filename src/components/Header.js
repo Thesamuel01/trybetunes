@@ -29,7 +29,6 @@ const Header = () => {
         <Typography
           gutterBottom
           variant="h5"
-          color="text.primary"
           component="div"
           sx={ {
             fontWeight: 600,

@@ -3,6 +3,7 @@ import user from './features/user/userSlice';
 import theme from './features/theme/themeSlice';
 import album from './features/albums/albumsSlice';
 import music from './features/musics/musicSlice';
+import navigation from './features/navigation/navigationSlice';
 
 const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ const store = configureStore({
     theme,
     album,
     music,
+    navigation,
   },
   devTools: true,
 });

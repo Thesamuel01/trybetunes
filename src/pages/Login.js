@@ -26,6 +26,7 @@ const Login = ({ history }) => {
     event.preventDefault();
 
     dispatch(fetchUser({ name }));
+
     history.push('/search');
   };
 

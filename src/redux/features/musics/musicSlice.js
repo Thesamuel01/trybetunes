@@ -13,6 +13,7 @@ const initialState = {
     artistName: '',
     collectionName: '',
   },
+  favoritedSongs: [],
   checkedInputs: [],
   status: 'idle',
   error: null,
@@ -36,17 +37,21 @@ export const fetchMusic = createAsyncThunk(
 
 export const updateFavoritedSongs = createAsyncThunk(
   'music/updateFavoritedSongs',
-  async (track, action) => {
+  async ({ track, action }) => {
     try {
       if (action === 'add') {
         await addSong(track);
       } else if (action === 'remove') {
         await removeSong(track);
       }
-
       const favoritedSongs = await getFavoriteSongs();
+      const checkedInputs = favoritedSongs.length !== 0
+        ? favoritedSongs.map(({ trackId }) => trackId) : [];
 
-      return favoritedSongs;
+      return {
+        favoritedSongs,
+        checkedInputs,
+      };
     } catch (error) {
       return error.message;
     }
@@ -75,7 +80,8 @@ const musicSlice = createSlice({
       })
       .addCase(updateFavoritedSongs.fulfilled, (state, { payload }) => {
         state.status = 'succeeded';
-        state.checkedInputs = [...payload];
+        state.favoritedSongs = [...payload.favoritedSongs];
+        state.checkedInputs = [...payload.checkedInputs];
       })
       .addCase(updateFavoritedSongs.rejected, (state, { payload }) => {
         state.status = 'failed';
