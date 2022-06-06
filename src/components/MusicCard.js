@@ -31,12 +31,6 @@ const MusicCard = ({ track }) => {
                 <img src={ artworkUrl60 } alt={ `Imagem do album ${trackName}` } />
               </Box>
               <ListItemText primary={ trackName } />
-              <audio data-testid="audio-component" src={ previewUrl } controls>
-                <track kind="captions" />
-                O seu navegador não suporta o elemento
-                <code>audio</code>
-                .
-              </audio>
               <Checkbox
                 color="error"
                 id={ `${trackId}` }

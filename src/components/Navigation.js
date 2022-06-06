@@ -23,7 +23,7 @@ const Navigation = ({ loading }) => {
   }, []);
 
   return (
-    <div data-testid="header-component">
+    <Box>
       {loading ? <Loading />
         : (
           <Box>
@@ -61,7 +61,7 @@ const Navigation = ({ loading }) => {
             </BottomNavigation>
           </Box>
         ) }
-    </div>
+    </Box>
   );
 };
 

@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Grid, Typography } from '@mui/material';
+import { Box, Grid, Typography } from '@mui/material';
 import Loading from '../components/Loading';
 import MusicList from '../components/MusicList';
 import Navigation from '../components/Navigation';
 import { fetchMusic, updateFavoritedSongs } from '../redux/features/musics/musicSlice';
+import AudioPlayer from '../components/AudioPlayer';
 
 const Album = ({ match: { params: { id } } }) => {
   const dispatch = useDispatch();
@@ -19,8 +20,13 @@ const Album = ({ match: { params: { id } } }) => {
   }, []);
 
   return (
-    <div data-testid="page-album">
+    <Box
+      sx={ {
+        marginBottom: '200px',
+      } }
+    >
       <Navigation loading={ status === 'loading' } />
+      <AudioPlayer />
       {
         status === 'loading'
           ? <Loading />
@@ -90,7 +96,7 @@ const Album = ({ match: { params: { id } } }) => {
             </Grid>
           )
       }
-    </div>
+    </Box>
   );
 };
 
