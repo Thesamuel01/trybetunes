@@ -19,6 +19,8 @@ const initialState = {
   error: null,
   currentSongPlaying: {},
   songIndex: 0,
+  isPlaying: false,
+  startPlaying: false,
 };
 
 export const fetchMusic = createAsyncThunk(
@@ -80,6 +82,24 @@ const musicSlice = createSlice({
         state.currentSongPlaying = state.musics[previousSong];
       }
     },
+    playMusic: (state, { payload }) => {
+      state.isPlaying = payload;
+    },
+    startPlayMusic: (state, { payload }) => {
+      const index = state.musics.findIndex(({ trackId }) => payload.trackId === trackId);
+
+      state.startPlaying = payload.play;
+      state.currentSongPlaying = { ...state.musics[index] };
+      state.songIndex = index;
+
+      if (state.isPlaying) state.isPlaying = false;
+    },
+    closePlayer: (state) => {
+      state.startPlaying = false;
+      state.isPlaying = false;
+      state.songIndex = 0;
+      state.currentSongPlaying = { ...state.musics[0] };
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -90,7 +110,7 @@ const musicSlice = createSlice({
         state.status = 'succeeded';
         state.musics = [...payload.musics];
         state.artistInfos = { ...payload.artistInfo };
-        state.currentSongPlaying = { ...payload.musics[state.songIndex] };
+        state.currentSongPlaying = { ...state.musics[state.songIndex] };
       })
       .addCase(fetchMusic.rejected, (state) => {
         state.status = 'failed';
@@ -111,5 +131,11 @@ const musicSlice = createSlice({
   },
 });
 
-export const { goToNextSong, goToPreviousSong } = musicSlice.actions;
+export const {
+  goToNextSong,
+  goToPreviousSong,
+  playMusic,
+  startPlayMusic,
+  closePlayer,
+} = musicSlice.actions;
 export default musicSlice.reducer;

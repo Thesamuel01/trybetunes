@@ -13,7 +13,7 @@ const Favorites = () => {
 
   useEffect(() => {
     dispatch(updateFavoritedSongs({ track: {}, action: '' }));
-  }, []);
+  }, [dispatch]);
 
   return (
     <section>

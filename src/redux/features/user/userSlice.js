@@ -3,6 +3,7 @@ import { createUser, getUser, updateUser } from '../../../services/userAPI';
 
 const initialState = {
   name: '',
+  password: '',
   email: '',
   image: '',
   description: '',
@@ -13,10 +14,10 @@ const initialState = {
 
 export const fetchUser = createAsyncThunk(
   'user/fetchUser',
-  async ({ name }) => {
+  async ({ name, password }) => {
     try {
       if (name !== '') {
-        await createUser({ name });
+        await createUser({ name, password });
       }
 
       return await getUser();
@@ -52,6 +53,7 @@ const userSlice = createSlice({
       })
       .addCase(fetchUser.fulfilled, (state, { payload }) => {
         state.status = 'succeeded';
+        state.password = payload.password;
         state.name = payload.name;
         state.description = payload.description;
         state.email = payload.email;

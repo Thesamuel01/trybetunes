@@ -32,6 +32,7 @@
     display: flex;
     justify-content: center;
     width: 100%;
+    margin-bottom: .5rem;
   }
 
   .slider {
@@ -92,7 +93,7 @@
   /* Progress bar = chrome and safari */
   .progressBar::before {
     content: "";
-    height: 11px;
+    height: 12px;
     width: var(--seek-before-width);
     background-color: var(--seek-before-color);
     border-top-left-radius: 10px;
@@ -115,8 +116,8 @@
   /* Knobby - chrome and safari */
   .progressBar::-webkit-slider-thumb {
     -webkit-appearance: none;
-    height: 15px;
-    width: 15px;
+    height: 16px;
+    width: 16px;
     border-radius: 50%;
     border: none;
     background-color: var(--knobby);
@@ -135,8 +136,8 @@
   
   /* Knobby - firefox */
   .progressBar::-moz-range-thumb {
-    height: 15px;
-    width: 15px;
+    height: 16px;
+    width: 16px;
     border-radius: 50%;
     border: transparent;
     background-color: var(--knobby);

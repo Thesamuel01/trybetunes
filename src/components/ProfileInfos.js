@@ -10,7 +10,7 @@ const ProfileInfos = () => {
 
   useEffect(() => {
     dispatch(fetchUser({ name: '' }));
-  }, []);
+  }, [dispatch]);
 
   return (
     <Box

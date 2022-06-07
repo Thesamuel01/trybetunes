@@ -1,3 +1,5 @@
+import cryptoJs from 'crypto-js';
+
 const USER_KEY = 'user';
 const TIMEOUT = 1500;
 const SUCCESS_STATUS = 'OK';
@@ -26,14 +28,21 @@ export const getUser = () => new Promise((resolve) => {
   simulateRequest(user)(resolve);
 });
 
-export const createUser = (user) => new Promise((resolve) => {
+export const createUser = ({ name, password }) => new Promise((resolve) => {
+  const hash = cryptoJs.SHA256(password);
   const emptyUser = {
     name: '',
+    password: '',
     email: '',
     image: '',
     description: '',
   };
-  saveUser({ ...emptyUser, ...user });
+  const userLogin = {
+    name,
+    password: hash.toString(),
+  };
+
+  saveUser({ ...emptyUser, ...userLogin });
   simulateRequest(SUCCESS_STATUS)(resolve);
 });
 

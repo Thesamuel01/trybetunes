@@ -1,15 +1,20 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Checkbox, ListItem, ListItemText } from '@mui/material';
+import { Checkbox, ListItemButton, ListItemText } from '@mui/material';
 import { Favorite, FavoriteBorder } from '@mui/icons-material';
 import { Box } from '@mui/system';
-import { updateFavoritedSongs } from '../redux/features/musics/musicSlice';
+import {
+  startPlayMusic, updateFavoritedSongs,
+} from '../redux/features/musics/musicSlice';
 
 const MusicCard = ({ track }) => {
   const dispatch = useDispatch();
-  const { checkedInputs, status } = useSelector((state) => state.music);
-  const { trackId, trackName, previewUrl, artworkUrl60 } = track;
+  const {
+    checkedInputs, status, startPlaying,
+    currentSongPlaying: { trackId: songPlaying },
+  } = useSelector((state) => state.music);
+  const { trackId, trackName, artworkUrl60 } = track;
 
   const handleCheckbox = ({ target }) => {
     const action = target.checked ? 'add' : 'remove';
@@ -22,7 +27,19 @@ const MusicCard = ({ track }) => {
       {
         status !== 'loading'
           && (
-            <ListItem button divider>
+            <ListItemButton
+              divider
+              selected={ songPlaying === trackId && startPlaying }
+              onClick={ () => dispatch(startPlayMusic({ play: true, trackId })) }
+              sx={ {
+                '&.Mui-selected': {
+                  bgcolor: 'rgba(186, 104, 200, 0.08)',
+                },
+                '&.Mui-selected:hover': {
+                  bgcolor: 'rgba(186, 104, 200, 0.08)',
+                },
+              } }
+            >
               <Box
                 sx={ {
                   marginRight: '1rem',
@@ -40,7 +57,7 @@ const MusicCard = ({ track }) => {
                 checked={ checkedInputs.some((id) => id === trackId) }
                 onChange={ handleCheckbox }
               />
-            </ListItem>
+            </ListItemButton>
           )
       }
     </Box>

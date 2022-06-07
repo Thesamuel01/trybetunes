@@ -18,7 +18,7 @@ const ProfileEditInfos = () => {
 
   useEffect(() => {
     dispatch(fetchUser({ name: '' }));
-  }, []);
+  }, [dispatch]);
 
   const saveUserInfos = (event) => {
     event.preventDefault();

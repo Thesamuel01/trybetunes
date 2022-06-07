@@ -20,7 +20,7 @@ const Navigation = ({ loading }) => {
     const { location: { pathname } } = history;
 
     dispatch(changePath(pathname));
-  }, []);
+  }, [dispatch, history]);
 
   return (
     <Box>

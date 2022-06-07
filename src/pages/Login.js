@@ -1,37 +1,34 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Button, TextField } from '@mui/material';
-import AccountCircle from '@mui/icons-material/AccountCircle';
+import { IconButton } from '@mui/material';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
 import { Box } from '@mui/system';
 import Loading from '../components/Loading';
 import img from '../images/background-login.jpg';
-import { fetchUser } from '../redux/features/user/userSlice';
+import { toggleTheme } from '../redux/features/theme/themeSlice';
+import LoginInput from '../components/LoginInput';
 
-const Login = ({ history }) => {
+const Login = () => {
   const dispatch = useDispatch();
+
   const { status } = useSelector((state) => state.user);
-
-  const [name, setName] = useState('');
-  const [isButtonDisabled, setDisableState] = useState(true);
-
-  const handleChange = ({ target }) => {
-    const { value } = target;
-
-    setName(value);
-    setDisableState(name.length <= 2);
-  };
-
-  const createUserProfile = (event) => {
-    event.preventDefault();
-
-    dispatch(fetchUser({ name }));
-
-    history.push('/search');
-  };
+  const { mode } = useSelector((state) => state.theme);
 
   return (
     <Box data-testid="page-login">
+      <IconButton
+        sx={ {
+          ml: 1,
+          position: 'fixed',
+          bgcolor: 'transparent',
+        } }
+        onClick={ () => dispatch(toggleTheme()) }
+        color="inherit"
+      >
+        {mode === 'light' ? <Brightness7Icon /> : <Brightness4Icon />}
+      </IconButton>
       { status === 'loading'
         ? <Loading />
         : (
@@ -41,6 +38,9 @@ const Login = ({ history }) => {
               height: '100vh',
               justifyContent: 'space-between',
               width: '100vw',
+              '@media (max-width: 1200px)': {
+                justifyContent: 'center',
+              },
             } }
           >
             <Box
@@ -52,45 +52,7 @@ const Login = ({ history }) => {
                 margin: 'auto 0',
               } }
             >
-              <form
-                style={ {
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                } }
-                onSubmit={ createUserProfile }
-              >
-                <Box
-                  sx={ {
-                    alignItems: 'flex-end',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    margin: '0 auto',
-                    width: 300,
-                  } }
-                >
-                  <AccountCircle sx={ { color: 'action.active', mr: 1, my: 0.5 } } />
-                  <TextField
-                    id="input-with-sx"
-                    label="Name"
-                    name="name"
-                    fullWidth
-                    variant="standard"
-                    value={ name }
-                    onChange={ handleChange }
-                  />
-                </Box>
-                <Button
-                  color="secondary"
-                  size="large"
-                  type="submit"
-                  variant="contained"
-                  disabled={ isButtonDisabled }
-                >
-                  Entrar
-                </Button>
-              </form>
+              <LoginInput />
             </Box>
             <Box
               sx={ {
@@ -100,6 +62,9 @@ const Login = ({ history }) => {
                 backgroundPosition: 'center',
                 height: '100%',
                 width: '70%',
+                '@media (max-width: 1200px)': {
+                  display: 'none',
+                },
               } }
             />
           </Box>

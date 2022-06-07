@@ -17,7 +17,7 @@ const Album = ({ match: { params: { id } } }) => {
   useEffect(() => {
     dispatch(fetchMusic(id));
     dispatch(updateFavoritedSongs({ track: {}, action: '' }));
-  }, []);
+  }, [dispatch, id]);
 
   return (
     <Box
