@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import PropTypes from 'prop-types';
+import { useRouteMatch } from 'react-router-dom';
 import { Box, Grid, Typography } from '@mui/material';
 import Loading from '../components/Loading';
 import MusicList from '../components/MusicList';
@@ -8,7 +8,9 @@ import Navigation from '../components/Navigation';
 import { fetchMusic, updateFavoritedSongs } from '../redux/features/musics/musicSlice';
 import AudioPlayer from '../components/AudioPlayer';
 
-const Album = ({ match: { params: { id } } }) => {
+const Album = () => {
+  const { params: { id } } = useRouteMatch();
+
   const dispatch = useDispatch();
   const {
     artistInfos: { artworkUrl100, artistName, collectionName }, status,
@@ -98,19 +100,6 @@ const Album = ({ match: { params: { id } } }) => {
       }
     </Box>
   );
-};
-
-Album.propTypes = {
-  /* Trecho baseado nos links abaixo, para fazer a validacao de props objeto.
-    Links:
-    - https://stackoverflow.com/questions/46484026/eslint-react-router-v4-how-to-validate-match-params-props
-    - https://pt-br.reactjs.org/docs/typechecking-with-proptypes.html
-  */
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      id: PropTypes.string.isRequired,
-    }).isRequired,
-  }).isRequired,
 };
 
 export default Album;

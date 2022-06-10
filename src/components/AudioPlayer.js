@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
 import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
@@ -11,10 +11,7 @@ import ShuffleOnIcon from '@mui/icons-material/ShuffleOn';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import { Box, Button, Checkbox, IconButton, Slide, Typography } from '@mui/material';
 import {
-  closePlayer,
-  goToNextSong,
-  goToPreviousSong,
-  playMusic,
+  closePlayer, goToNextSong, goToPreviousSong, playMusic, repeatSong,
 } from '../redux/features/musics/musicSlice';
 import style from './AudioPlayer.module.css';
 
@@ -22,7 +19,7 @@ const AudioPlayer = () => {
   const dispatch = useDispatch();
   const {
     currentSongPlaying: { previewUrl, trackName },
-    songIndex, musics, isPlaying, startPlaying,
+    songIndex, musics, isPlaying, showPlayer, repeat,
   } = useSelector((state) => state.music);
 
   const [duration, setDuration] = useState(0);
@@ -31,6 +28,7 @@ const AudioPlayer = () => {
   const audioPlayer = useRef();
   const progressBar = useRef();
   const animationRef = useRef();
+  const repeatRef = useRef();
 
   useEffect(() => {
     if (!Number.isNaN(audioPlayer.current.duration)) {
@@ -42,51 +40,21 @@ const AudioPlayer = () => {
   },
   [audioPlayer?.current?.loadedmetadata, audioPlayer?.current?.readyState]);
 
-  const calcTime = (secs) => {
-    const SECONDS = 60;
-    const ABOVE_TEN = 10;
-
-    const minutes = Math.floor(secs / SECONDS);
-    const returnedMinutes = minutes < ABOVE_TEN ? `0${minutes}` : `${minutes}`;
-    const seconds = Math.floor(secs % SECONDS);
-    const returnedSeconds = seconds < ABOVE_TEN ? `0${seconds}` : `${seconds}`;
-
-    return `${returnedMinutes}:${returnedSeconds}`;
-  };
-
-  const resetPlayer = () => {
+  const reloadPlayer = () => {
     progressBar.current.style.setProperty('--seek-before-width', '0%');
     progressBar.current.value = 0;
     setCurrentTime(progressBar.current.value);
 
-    if (songIndex === 0 || songIndex === musics.length - 1) {
-      audioPlayer.current.load();
-    }
-  };
-
-  const dispatchSomenthing = (action) => new Promise((resolve) => {
-    dispatch(action());
-    resolve();
-  });
-
-  const previousSong = async () => {
-    cancelAnimationFrame(animationRef.current);
-    await dispatchSomenthing(goToPreviousSong);
-    resetPlayer();
+    if (songIndex === 0 || songIndex === musics.length - 1) audioPlayer.current.load();
 
     audioPlayer.current.play();
     animationRef.current = requestAnimationFrame(whilePlaying);
-
-    if (!isPlaying) dispatch(playMusic(!isPlaying));
   };
 
-  const nextSong = async () => {
+  const changeSong = async (action) => {
     cancelAnimationFrame(animationRef.current);
-    await dispatchSomenthing(goToNextSong);
-    resetPlayer();
-
-    audioPlayer.current.play();
-    animationRef.current = requestAnimationFrame(whilePlaying);
+    await new Promise((resolve) => resolve(dispatch(action())));
+    reloadPlayer();
 
     if (!isPlaying) dispatch(playMusic(!isPlaying));
   };
@@ -100,14 +68,22 @@ const AudioPlayer = () => {
     setCurrentTime(progressBar.current.value);
   };
 
+  const verifyIfRepeat = () => {
+    if (repeatRef.current) {
+      cancelAnimationFrame(animationRef.current);
+      reloadPlayer();
+    } else {
+      changeSong(goToNextSong);
+    }
+  };
+
   const whilePlaying = () => {
     progressBar.current.value = audioPlayer.current.currentTime;
     changePlayerCurrentTime();
     animationRef.current = requestAnimationFrame(whilePlaying);
 
-    if (Math.floor(audioPlayer.current.currentTime) === duration) {
-      nextSong();
-    }
+    const time = Math.floor(audioPlayer.current.currentTime);
+    if (time === duration) verifyIfRepeat();
   };
 
   const togglePlayPause = () => {
@@ -130,12 +106,30 @@ const AudioPlayer = () => {
   };
 
   const closeAudioPlayer = () => {
-    resetPlayer();
+    reloadPlayer();
     dispatch(closePlayer());
   };
 
+  const calcTime = (secs) => {
+    const SECONDS = 60;
+    const ABOVE_TEN = 10;
+
+    const minutes = Math.floor(secs / SECONDS);
+    const returnedMinutes = minutes < ABOVE_TEN ? `0${minutes}` : `${minutes}`;
+    const seconds = Math.floor(secs % SECONDS);
+    const returnedSeconds = seconds < ABOVE_TEN ? `0${seconds}` : `${seconds}`;
+
+    return `${returnedMinutes}:${returnedSeconds}`;
+  };
+
+  const handleCheckBox = (e) => {
+    repeatRef.current = e.target.checked;
+
+    dispatch(repeatSong());
+  };
+
   return (
-    <Slide direction="up" in={ startPlaying }>
+    <Slide direction="up" in={ showPlayer }>
       <Box
         hidden
         component="div"
@@ -176,16 +170,15 @@ const AudioPlayer = () => {
         >
           <Checkbox
             color="secondary"
-            // id={ `${trackId}` }
             inputProps={ { name: 'favorite' } }
             icon={ <ShuffleIcon /> }
             checkedIcon={ <ShuffleOnIcon /> }
-            // checked={ checkedInputs.some((id) => id === trackId) }
+            // checked={ repeat }
             // onChange={ handleCheckbox }
           />
           <IconButton
             name="previous"
-            onClick={ previousSong }
+            onClick={ () => changeSong(goToPreviousSong) }
           >
             <SkipPreviousIcon />
           </IconButton>
@@ -208,23 +201,21 @@ const AudioPlayer = () => {
           </Button>
           <IconButton
             name="next"
-            onClick={ nextSong }
+            onClick={ () => changeSong(goToNextSong) }
           >
             <SkipNextIcon />
           </IconButton>
           <Checkbox
             color="secondary"
-            // id={ `${trackId}` }
             inputProps={ { name: 'favorite' } }
             icon={ <RepeatIcon /> }
             checkedIcon={ <RepeatOnIcon /> }
-            // checked={ checkedInputs.some((id) => id === trackId) }
-            // onChange={ handleCheckbox }
+            onChange={ handleCheckBox }
           />
           <IconButton
             name="close"
             sx={ {
-              transform: 'translate(96px, -20px)',
+              transform: 'translate(90px, -12px)',
             } }
             onClick={ closeAudioPlayer }
           >

@@ -8,19 +8,16 @@ import getMusics from '../../../services/musicsAPI';
 
 const initialState = {
   musics: [],
-  artistInfos: {
-    artworkUrl100: '',
-    artistName: '',
-    collectionName: '',
-  },
+  artistInfos: {},
   favoritedSongs: [],
   checkedInputs: [],
   status: 'idle',
   error: null,
   currentSongPlaying: {},
+  repeat: false,
   songIndex: 0,
   isPlaying: false,
-  startPlaying: false,
+  showPlayer: false,
 };
 
 export const fetchMusic = createAsyncThunk(
@@ -88,17 +85,20 @@ const musicSlice = createSlice({
     startPlayMusic: (state, { payload }) => {
       const index = state.musics.findIndex(({ trackId }) => payload.trackId === trackId);
 
-      state.startPlaying = payload.play;
+      state.showPlayer = payload.play;
       state.currentSongPlaying = { ...state.musics[index] };
       state.songIndex = index;
 
       if (state.isPlaying) state.isPlaying = false;
     },
     closePlayer: (state) => {
-      state.startPlaying = false;
+      state.showPlayer = false;
       state.isPlaying = false;
       state.songIndex = 0;
       state.currentSongPlaying = { ...state.musics[0] };
+    },
+    repeatSong: (state) => {
+      state.repeat = !state.repeat;
     },
   },
   extraReducers: (builder) => {
@@ -137,5 +137,6 @@ export const {
   playMusic,
   startPlayMusic,
   closePlayer,
+  repeatSong,
 } = musicSlice.actions;
 export default musicSlice.reducer;
