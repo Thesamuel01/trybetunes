@@ -44,6 +44,15 @@ const userSlice = createSlice({
   reducers: {
     changeUserInfos: (state, { payload }) => {
       state[payload.key] = payload.value;
+
+      const valid = [
+        state.name !== '',
+        state.description !== '',
+        state.email !== '' && /^[A-Z0-9]+@[A-Z]+.com/i.test(state.email),
+        state.image !== '',
+      ];
+
+      state.disable = valid.some((check) => check === false);
     },
   },
   extraReducers: (builder) => {

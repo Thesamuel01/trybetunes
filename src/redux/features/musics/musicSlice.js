@@ -8,14 +8,15 @@ import getMusics from '../../../services/musicsAPI';
 
 const initialState = {
   musics: [],
+  songsToBePlayed: [],
   artistInfos: {},
   favoritedSongs: [],
   checkedInputs: [],
   status: 'idle',
   error: null,
   currentSongPlaying: {},
-  repeat: false,
   songIndex: 0,
+  shuffle: false,
   isPlaying: false,
   showPlayer: false,
 };
@@ -66,9 +67,9 @@ const musicSlice = createSlice({
     goToNextSong: (state) => {
       const nextSong = state.songIndex + 1;
 
-      if (state.songIndex < state.musics.length - 1) {
+      if (state.songIndex < state.songsToBePlayed.length - 1) {
         state.songIndex = nextSong;
-        state.currentSongPlaying = state.musics[nextSong];
+        state.currentSongPlaying = state.songsToBePlayed[nextSong];
       }
     },
     goToPreviousSong: (state) => {
@@ -76,29 +77,33 @@ const musicSlice = createSlice({
 
       if (state.songIndex > 0) {
         state.songIndex = previousSong;
-        state.currentSongPlaying = state.musics[previousSong];
+        state.currentSongPlaying = state.songsToBePlayed[previousSong];
       }
     },
     playMusic: (state, { payload }) => {
       state.isPlaying = payload;
     },
     startPlayMusic: (state, { payload }) => {
-      const index = state.musics.findIndex(({ trackId }) => payload.trackId === trackId);
+      const index = state.songsToBePlayed
+        .findIndex(({ trackId }) => payload.trackId === trackId);
 
       state.showPlayer = payload.play;
-      state.currentSongPlaying = { ...state.musics[index] };
+      state.currentSongPlaying = { ...state.songsToBePlayed[index] };
       state.songIndex = index;
 
       if (state.isPlaying) state.isPlaying = false;
+    },
+    shuffleSongs: (state) => {
+      state.shuffle = !state.shuffle;
+      state.songsToBePlayed = state.shuffle
+        ? state.songsToBePlayed.sort(() => Math.random() - 0.5)
+        : [...state.musics];
     },
     closePlayer: (state) => {
       state.showPlayer = false;
       state.isPlaying = false;
       state.songIndex = 0;
-      state.currentSongPlaying = { ...state.musics[0] };
-    },
-    repeatSong: (state) => {
-      state.repeat = !state.repeat;
+      state.currentSongPlaying = { ...state.songsToBePlayed[0] };
     },
   },
   extraReducers: (builder) => {
@@ -109,8 +114,9 @@ const musicSlice = createSlice({
       .addCase(fetchMusic.fulfilled, (state, { payload }) => {
         state.status = 'succeeded';
         state.musics = [...payload.musics];
+        state.songsToBePlayed = [...payload.musics];
         state.artistInfos = { ...payload.artistInfo };
-        state.currentSongPlaying = { ...state.musics[state.songIndex] };
+        state.currentSongPlaying = { ...state.songsToBePlayed[state.songIndex] };
       })
       .addCase(fetchMusic.rejected, (state) => {
         state.status = 'failed';
@@ -137,6 +143,6 @@ export const {
   playMusic,
   startPlayMusic,
   closePlayer,
-  repeatSong,
+  shuffleSongs,
 } = musicSlice.actions;
 export default musicSlice.reducer;

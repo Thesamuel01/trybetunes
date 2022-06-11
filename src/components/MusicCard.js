@@ -11,15 +11,18 @@ import {
 const MusicCard = ({ track }) => {
   const dispatch = useDispatch();
   const {
-    checkedInputs, status, startPlaying,
+    checkedInputs, status, showPlayer,
     currentSongPlaying: { trackId: songPlaying },
   } = useSelector((state) => state.music);
   const { trackId, trackName, artworkUrl60 } = track;
 
-  const handleCheckbox = ({ target }) => {
-    const action = target.checked ? 'add' : 'remove';
-
-    dispatch(updateFavoritedSongs({ track, action }));
+  const handleOnClick = ({ target: { name, checked } }) => {
+    if (name === 'favorite') {
+      const action = checked ? 'add' : 'remove';
+      dispatch(updateFavoritedSongs({ track, action }));
+    } else {
+      dispatch(startPlayMusic({ play: true, trackId }));
+    }
   };
 
   return (
@@ -29,8 +32,8 @@ const MusicCard = ({ track }) => {
           && (
             <ListItemButton
               divider
-              selected={ songPlaying === trackId && startPlaying }
-              onClick={ () => dispatch(startPlayMusic({ play: true, trackId })) }
+              selected={ songPlaying === trackId && showPlayer }
+              onClick={ handleOnClick }
               sx={ {
                 '&.Mui-selected': {
                   bgcolor: 'rgba(186, 104, 200, 0.08)',
@@ -55,7 +58,6 @@ const MusicCard = ({ track }) => {
                 icon={ <FavoriteBorder /> }
                 checkedIcon={ <Favorite /> }
                 checked={ checkedInputs.some((id) => id === trackId) }
-                onChange={ handleCheckbox }
               />
             </ListItemButton>
           )

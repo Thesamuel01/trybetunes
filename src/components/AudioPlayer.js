@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useMemo } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
 import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
@@ -11,7 +11,7 @@ import ShuffleOnIcon from '@mui/icons-material/ShuffleOn';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import { Box, Button, Checkbox, IconButton, Slide, Typography } from '@mui/material';
 import {
-  closePlayer, goToNextSong, goToPreviousSong, playMusic, repeatSong,
+  closePlayer, goToNextSong, goToPreviousSong, shuffleSongs,
 } from '../redux/features/musics/musicSlice';
 import style from './AudioPlayer.module.css';
 
@@ -19,16 +19,18 @@ const AudioPlayer = () => {
   const dispatch = useDispatch();
   const {
     currentSongPlaying: { previewUrl, trackName },
-    songIndex, musics, isPlaying, showPlayer, repeat,
+    songIndex, songsToBePlayed, showPlayer,
   } = useSelector((state) => state.music);
 
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   const audioPlayer = useRef();
   const progressBar = useRef();
   const animationRef = useRef();
   const repeatRef = useRef();
+  const playingRef = useRef(false);
 
   useEffect(() => {
     if (!Number.isNaN(audioPlayer.current.duration)) {
@@ -45,18 +47,27 @@ const AudioPlayer = () => {
     progressBar.current.value = 0;
     setCurrentTime(progressBar.current.value);
 
-    if (songIndex === 0 || songIndex === musics.length - 1) audioPlayer.current.load();
+    if (playingRef.current) {
+      const temp = songIndex === 0 || songIndex === songsToBePlayed.length - 1;
 
-    audioPlayer.current.play();
-    animationRef.current = requestAnimationFrame(whilePlaying);
+      if (temp) audioPlayer.current.load();
+
+      audioPlayer.current.play();
+      animationRef.current = requestAnimationFrame(whilePlaying);
+    } else {
+      audioPlayer.current.load();
+    }
   };
 
   const changeSong = async (action) => {
+    if (!playingRef.current) {
+      setIsPlaying(!isPlaying);
+      playingRef.current = !playingRef.current;
+    }
+
     cancelAnimationFrame(animationRef.current);
     await new Promise((resolve) => resolve(dispatch(action())));
     reloadPlayer();
-
-    if (!isPlaying) dispatch(playMusic(!isPlaying));
   };
 
   const changePlayerCurrentTime = () => {
@@ -70,8 +81,8 @@ const AudioPlayer = () => {
 
   const verifyIfRepeat = () => {
     if (repeatRef.current) {
-      cancelAnimationFrame(animationRef.current);
       reloadPlayer();
+      cancelAnimationFrame(animationRef.current);
     } else {
       changeSong(goToNextSong);
     }
@@ -87,17 +98,17 @@ const AudioPlayer = () => {
   };
 
   const togglePlayPause = () => {
-    const prevValue = isPlaying;
+    setIsPlaying(!isPlaying);
 
-    dispatch(playMusic(!prevValue));
-
-    if (!prevValue) {
+    if (!playingRef.current) {
       audioPlayer.current.play();
       animationRef.current = requestAnimationFrame(whilePlaying);
     } else {
       audioPlayer.current.pause();
       cancelAnimationFrame(animationRef.current);
     }
+
+    playingRef.current = !playingRef.current;
   };
 
   const changeRange = () => {
@@ -105,9 +116,11 @@ const AudioPlayer = () => {
     changePlayerCurrentTime();
   };
 
-  const closeAudioPlayer = () => {
+  const closeAudioPlayer = async () => {
+    await new Promise((resolve) => resolve(dispatch(closePlayer())));
+    playingRef.current = false;
+
     reloadPlayer();
-    dispatch(closePlayer());
   };
 
   const calcTime = (secs) => {
@@ -123,9 +136,12 @@ const AudioPlayer = () => {
   };
 
   const handleCheckBox = (e) => {
-    repeatRef.current = e.target.checked;
-
-    dispatch(repeatSong());
+    const { target: { name } } = e;
+    if (name === 'repeat') {
+      repeatRef.current = e.target.checked;
+    } else if (name === 'shuffle') {
+      dispatch(shuffleSongs());
+    }
   };
 
   return (
@@ -170,11 +186,10 @@ const AudioPlayer = () => {
         >
           <Checkbox
             color="secondary"
-            inputProps={ { name: 'favorite' } }
+            inputProps={ { name: 'shuffle' } }
             icon={ <ShuffleIcon /> }
             checkedIcon={ <ShuffleOnIcon /> }
-            // checked={ repeat }
-            // onChange={ handleCheckbox }
+            onChange={ handleCheckBox }
           />
           <IconButton
             name="previous"
@@ -194,7 +209,7 @@ const AudioPlayer = () => {
             } }
           >
             {
-              isPlaying
+              playingRef.current
                 ? <PauseIcon />
                 : <PlayArrowIcon />
             }
@@ -207,7 +222,7 @@ const AudioPlayer = () => {
           </IconButton>
           <Checkbox
             color="secondary"
-            inputProps={ { name: 'favorite' } }
+            inputProps={ { name: 'repeat' } }
             icon={ <RepeatIcon /> }
             checkedIcon={ <RepeatOnIcon /> }
             onChange={ handleCheckBox }
