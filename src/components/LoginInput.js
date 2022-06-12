@@ -20,7 +20,9 @@ const LoginInput = () => {
       ...user,
       [name]: value,
     }));
-    setDisableState(user.name.length <= 2);
+
+    const isValid = user.name.length > 2 && user.password.length > 5;
+    setDisableState(!isValid);
   };
 
   const createUserProfile = (event) => {
