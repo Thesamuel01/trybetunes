@@ -50,8 +50,8 @@ const ProfileEditInfos = () => {
         sx={ {
           padding: '1.5rem',
           margin: '2rem',
-          width: '30%',
-          height: '60%',
+          width: '35%',
+          height: '70%',
           maxWidth: '400px',
           minWidth: '300px',
         } }
@@ -73,6 +73,11 @@ const ProfileEditInfos = () => {
                   sx={ {
                     height: '80px',
                     width: '80px',
+                    '@media (max-width: 1000px)': {
+                      height: '50px',
+                      width: '50px',
+                      marginRight: '1rem',
+                    },
                   } }
                 />
                 <TextField

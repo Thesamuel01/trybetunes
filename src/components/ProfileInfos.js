@@ -25,8 +25,8 @@ const ProfileInfos = () => {
         sx={ {
           padding: '1.5rem',
           margin: '2rem',
-          width: '30%',
-          height: '60%',
+          width: '35%',
+          height: '70%',
           maxWidth: '400px',
           minWidth: '300px',
         } }
@@ -93,7 +93,10 @@ const ProfileInfos = () => {
                   variant="body"
                   component="p"
                   align="justify"
-                  sx={ { wordWrap: 'break-word' } }
+                  sx={ {
+                    wordWrap: 'break-word',
+                    marginBottom: '2rem',
+                  } }
                 >
                   { description === '' ? '-' : description }
                 </Typography>

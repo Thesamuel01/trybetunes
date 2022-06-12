@@ -2,7 +2,8 @@ import React from 'react';
 
 const NotFound = () => (
   <div data-testid="page-not-found">
-    NotFound
+    <h1>Page Not Found</h1>
+    <span>teste</span>
   </div>
 );
 

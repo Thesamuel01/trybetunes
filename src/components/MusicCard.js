@@ -19,6 +19,7 @@ const MusicCard = ({ track }) => {
   const handleOnClick = ({ target: { name, checked } }) => {
     if (name === 'favorite') {
       const action = checked ? 'add' : 'remove';
+
       dispatch(updateFavoritedSongs({ track, action }));
     } else {
       dispatch(startPlayMusic({ play: true, trackId }));

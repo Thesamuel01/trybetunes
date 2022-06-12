@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, current } from '@reduxjs/toolkit';
 import {
   addSong,
   getFavoriteSongs,
@@ -17,6 +17,7 @@ const initialState = {
   currentSongPlaying: {},
   songIndex: 0,
   shuffle: false,
+  repeat: false,
   isPlaying: false,
   showPlayer: false,
 };
@@ -39,7 +40,7 @@ export const fetchMusic = createAsyncThunk(
 
 export const updateFavoritedSongs = createAsyncThunk(
   'music/updateFavoritedSongs',
-  async ({ track, action }) => {
+  async ({ track, action, pathname }) => {
     try {
       if (action === 'add') {
         await addSong(track);
@@ -53,6 +54,7 @@ export const updateFavoritedSongs = createAsyncThunk(
       return {
         favoritedSongs,
         checkedInputs,
+        pathname,
       };
     } catch (error) {
       return error.message;
@@ -93,17 +95,37 @@ const musicSlice = createSlice({
 
       if (state.isPlaying) state.isPlaying = false;
     },
-    shuffleSongs: (state) => {
+    repeatSong: (state) => {
+      state.repeat = !state.repeat;
+    },
+    shuffleSongs: (state, { payload }) => {
       state.shuffle = !state.shuffle;
+
+      let songsList = [];
+      const stateValue = current(state);
+      const RANDOM = 0.5;
+
+      if (payload === '/favorites') songsList = [...stateValue.favoritedSongs];
+      else songsList = [...stateValue.musics];
+
+      const songsOnList = songsList
+        .filter(({ trackId }) => trackId !== state.currentSongPlaying.trackId);
+
       state.songsToBePlayed = state.shuffle
-        ? state.songsToBePlayed.sort(() => Math.random() - 0.5)
-        : [...state.musics];
+        ? [state.currentSongPlaying, ...songsOnList.sort(() => Math.random() - RANDOM)]
+        : [...songsList];
+    },
+    updateAgain: (state) => {
+      state.currentSongPlaying = { ...state.favoritedSongs[state.songIndex] };
+      state.songsToBePlayed = [...state.favoritedSongs];
     },
     closePlayer: (state) => {
       state.showPlayer = false;
       state.isPlaying = false;
       state.songIndex = 0;
-      state.currentSongPlaying = { ...state.songsToBePlayed[0] };
+      state.shuffle = false;
+      state.repeat = false;
+      state.currentSongPlaying = {};
     },
   },
   extraReducers: (builder) => {
@@ -129,6 +151,10 @@ const musicSlice = createSlice({
         state.status = 'succeeded';
         state.favoritedSongs = [...payload.favoritedSongs];
         state.checkedInputs = [...payload.checkedInputs];
+
+        if (payload.pathname) {
+          state.songsToBePlayed = [...state.favoritedSongs];
+        }
       })
       .addCase(updateFavoritedSongs.rejected, (state, { payload }) => {
         state.status = 'failed';
@@ -144,5 +170,7 @@ export const {
   startPlayMusic,
   closePlayer,
   shuffleSongs,
+  repeatSong,
+  updateAgain,
 } = musicSlice.actions;
 export default musicSlice.reducer;

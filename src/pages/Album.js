@@ -5,7 +5,9 @@ import { Box, Grid, Typography } from '@mui/material';
 import Loading from '../components/Loading';
 import MusicList from '../components/MusicList';
 import Navigation from '../components/Navigation';
-import { fetchMusic, updateFavoritedSongs } from '../redux/features/musics/musicSlice';
+import {
+  closePlayer, fetchMusic, updateFavoritedSongs,
+} from '../redux/features/musics/musicSlice';
 import AudioPlayer from '../components/AudioPlayer';
 
 const Album = () => {
@@ -19,6 +21,10 @@ const Album = () => {
   useEffect(() => {
     dispatch(fetchMusic(id));
     dispatch(updateFavoritedSongs({ track: {}, action: '' }));
+
+    return () => {
+      dispatch(closePlayer());
+    };
   }, [dispatch, id]);
 
   return (

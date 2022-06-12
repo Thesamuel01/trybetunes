@@ -10,6 +10,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Loading from './Loading';
 import Header from './Header';
 import { changePath } from '../redux/features/navigation/navigationSlice';
+import { fetchUser } from '../redux/features/user/userSlice';
 
 const Navigation = ({ loading }) => {
   const dispatch = useDispatch();
@@ -20,6 +21,7 @@ const Navigation = ({ loading }) => {
     const { location: { pathname } } = history;
 
     dispatch(changePath(pathname));
+    dispatch(fetchUser({ name: '' }));
   }, [dispatch, history]);
 
   return (

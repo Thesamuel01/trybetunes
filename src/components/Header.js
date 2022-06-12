@@ -1,15 +1,15 @@
 import React from 'react';
-import { AppBar, IconButton, Typography } from '@mui/material';
+import { AppBar, Avatar, Chip, IconButton, Stack, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
-import { AccountCircle } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleTheme } from '../redux/features/theme/themeSlice';
 
 const Header = () => {
   const dispatch = useDispatch();
-  const mode = useSelector((state) => state.theme.mode);
+  const { mode } = useSelector((state) => state.theme);
+  const { name } = useSelector((state) => state.user);
 
   return (
     <Box
@@ -39,13 +39,10 @@ const Header = () => {
         >
           TrybeTunes
         </Typography>
-        {/* <Stack direction="row" spacing={ 1 }>
-          <Chip
-            avatar={ <Avatar>{userName[0].toUpperCase()}</Avatar> }
-            label={ userName }
-          />
-        </Stack> */}
-        <Box>
+
+        <Box
+          sx={ { display: 'flex' } }
+        >
           <IconButton
             sx={ { ml: 1 } }
             onClick={ () => dispatch(toggleTheme()) }
@@ -53,34 +50,17 @@ const Header = () => {
           >
             {mode === 'light' ? <Brightness7Icon /> : <Brightness4Icon />}
           </IconButton>
-          <IconButton
-            size="large"
-            aria-label="account of current user"
-            aria-controls="menu-appbar"
-            aria-haspopup="true"
-            // onClick={handleMenu}
-            color="inherit"
-          >
-            <AccountCircle />
-          </IconButton>
-          {/* <Menu
-            id="menu-appbar"
-            anchorEl={anchorEl}
-            anchorOrigin={ {
-              vertical: 'top',
-              horizontal: 'right',
+          <Stack
+            direction="row"
+            sx={ {
+              margin: 'auto .5rem auto 0',
             } }
-            keepMounted
-            transformOrigin={ {
-              vertical: 'top',
-              horizontal: 'right',
-            } }
-            open={Boolean(anchorEl)}
-            onClose={handleClose}
           >
-            <MenuItem onClick={handleClose}>Profile</MenuItem>
-            <MenuItem onClick={handleClose}>My account</MenuItem>
-          </Menu> */}
+            <Chip
+              avatar={ <Avatar>{name && name[0].toUpperCase()}</Avatar> }
+              label={ name }
+            />
+          </Stack>
         </Box>
       </AppBar>
     </Box>
