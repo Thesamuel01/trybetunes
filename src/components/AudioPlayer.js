@@ -10,7 +10,8 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
 import ShuffleOnIcon from '@mui/icons-material/ShuffleOn';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
-import { Box, Button, Checkbox, IconButton, Slide, Typography } from '@mui/material';
+import { VolumeUp } from '@mui/icons-material';
+import { Box, Button, Checkbox, IconButton, Popover, Slide, Slider, Stack, Typography } from '@mui/material';
 import {
   closePlayer, goToNextSong, goToPreviousSong, repeatSong, shuffleSongs,
 } from '../redux/features/musics/musicSlice';
@@ -27,6 +28,9 @@ const AudioPlayer = () => {
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [volume, setVolume] = useState(50);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
 
   const audioPlayer = useRef();
   const progressBar = useRef();
@@ -150,6 +154,13 @@ const AudioPlayer = () => {
     }
   };
 
+  const changeVolume = (e) => {
+    const volumeValue = e.target.value;
+
+    setVolume(volumeValue);
+    audioPlayer.current.volume = volumeValue / 100;
+  }
+
   return (
     <Slide direction="up" in={ showPlayer }>
       <Box
@@ -166,7 +177,7 @@ const AudioPlayer = () => {
           width: '100%',
           maxWidth: '500px',
           position: 'fixed',
-          top: 'calc(100vh - 120px)',
+          top: 'calc(100vh - 128px)',
           zIndex: 100,
           left: 'calc((100vw / 2) - 250px)',
           '@media (max-Width: 539px)': {
@@ -186,9 +197,52 @@ const AudioPlayer = () => {
         <Box
           sx={ {
             textAlign: 'center',
-            transform: 'translate(24px, 0px)',
           } }
         >
+          <IconButton
+            name="volume"
+            aria-controls={open ? 'basic-menu' : undefined}
+            aria-haspopup="true"
+            aria-expanded={open ? 'true' : undefined}
+            onClick={ (e) => setAnchorEl(e.currentTarget) }
+          >
+            <VolumeUp />
+          </IconButton>
+          <Popover
+            open={open}
+            anchorEl={anchorEl}
+            onClose={ () => setAnchorEl(null) }
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'right',
+            }}
+            transformOrigin={{
+              vertical: 'bottom',
+              horizontal: 'right',
+            }}
+          >
+            <Stack
+              spacing={2}
+              direction="column"
+              alignItems="center"
+              width="100px"
+              height="29px"
+              sx={ {
+                margin: '.8rem',
+                '@media (max-Width: 539px)': {
+                  width: '80px',
+                },
+              } }
+            >
+              <Slider
+                aria-label="Volume"
+                color="secondary"
+                value={ volume }
+                onChange={ changeVolume }
+                onChangeCommitted={ () => setAnchorEl(null) }
+              />
+            </Stack>
+          </Popover>
           <Checkbox
             color="secondary"
             inputProps={ { name: 'shuffle' } }
@@ -268,6 +322,22 @@ const AudioPlayer = () => {
             {calcTime(duration)}
           </div>
         </div>
+        {/* <Stack
+          spacing={2}
+          direction="row"
+          sx={{ mb: 1, mt: 2 }}
+          alignItems="center"
+          width="200px"
+        >
+          <VolumeDown />
+          <Slider
+            aria-label="Volume"
+            color="secondary"
+            value={ volume }
+            onChange={ changeVolume }
+          />
+          <VolumeUp />
+      </Stack> */}
       </Box>
     </Slide>
   );

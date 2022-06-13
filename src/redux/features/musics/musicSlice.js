@@ -140,7 +140,7 @@ const musicSlice = createSlice({
         state.artistInfos = { ...payload.artistInfo };
         state.currentSongPlaying = { ...state.songsToBePlayed[state.songIndex] };
       })
-      .addCase(fetchMusic.rejected, (state) => {
+      .addCase(fetchMusic.rejected, (state, { payload }) => {
         state.status = 'failed';
         state.error = payload;
       })
