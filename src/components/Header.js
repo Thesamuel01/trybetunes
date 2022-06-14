@@ -59,6 +59,9 @@ const Header = () => {
             <Chip
               avatar={ <Avatar>{name && name[0].toUpperCase()}</Avatar> }
               label={ name }
+              sx={ {
+                color: 'white'
+              } }
             />
           </Stack>
         </Box>
