@@ -1,10 +1,12 @@
 import { Avatar, Box, Button, Card, CardContent, Typography } from '@mui/material';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { fetchUser } from '../redux/features/user/userSlice';
 import Loading from './Loading';
 
 const ProfileInfos = () => {
+  const history = useHistory();
   const dispatch = useDispatch();
   const { name, email, image, description, status } = useSelector((state) => state.user);
 
@@ -57,7 +59,7 @@ const ProfileInfos = () => {
                 <Button
                   variant="outlined"
                   color="secondary"
-                  href="/profile/edit"
+                  onClick={ () => history.push('/profile/edit')}
                 >
                   Editar perfil
                 </Button>
