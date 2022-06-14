@@ -13,7 +13,7 @@ import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import { VolumeUp } from '@mui/icons-material';
 import { Box, Button, Checkbox, IconButton, Popover, Slide, Slider, Stack, Typography } from '@mui/material';
 import {
-  closePlayer, goToNextSong, goToPreviousSong, repeatSong, shuffleSongs,
+  closePlayer, goToNextSong, goToPreviousSong, playMusic, repeatSong, shuffleSongs,
 } from '../redux/features/musics/musicSlice';
 import style from './AudioPlayer.module.css';
 
@@ -22,12 +22,11 @@ const AudioPlayer = () => {
   const dispatch = useDispatch();
   const {
     currentSongPlaying: { previewUrl, trackName },
-    songIndex, songsToBePlayed, showPlayer, shuffle, repeat,
+    songIndex, songsToBePlayed, showPlayer, shuffle, repeat, isPlaying,
   } = useSelector((state) => state.music);
 
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(50);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -36,7 +35,7 @@ const AudioPlayer = () => {
   const progressBar = useRef();
   const animationRef = useRef();
   const repeatRef = useRef(false);
-  const playingRef = useRef(false);
+  const playingRef = useRef(isPlaying);
 
   useEffect(() => {
     if (!Number.isNaN(audioPlayer.current.duration)) {
@@ -67,8 +66,8 @@ const AudioPlayer = () => {
   };
 
   const changeSong = async (action) => {
-    if (!playingRef.current) {
-      setIsPlaying(!isPlaying);
+    if (!isPlaying) {
+      dispatch(playMusic(!isPlaying));
       playingRef.current = !playingRef.current;
     }
 
@@ -105,9 +104,9 @@ const AudioPlayer = () => {
   };
 
   const togglePlayPause = () => {
-    setIsPlaying(!isPlaying);
+    dispatch(playMusic(!isPlaying));
 
-    if (!playingRef.current) {
+    if (!isPlaying) {
       audioPlayer.current.play();
       animationRef.current = requestAnimationFrame(whilePlaying);
     } else {
@@ -269,7 +268,7 @@ const AudioPlayer = () => {
             } }
           >
             {
-              playingRef.current
+             isPlaying
                 ? <PauseIcon />
                 : <PlayArrowIcon />
             }
