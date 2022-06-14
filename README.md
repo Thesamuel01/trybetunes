@@ -18,3 +18,7 @@ Principais tecnologias utilizadas:
 - React Router
 - Redux Toolkit
 - Material UI
+- Netlify
+
+# Deploy
+Link para o Deploy da aplicação: [TrybeTunes](https://trybetunesapp.netlify.app/)
