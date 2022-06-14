@@ -1,6 +1,6 @@
 const searchAlbumsAPI = async (artist) => {
   const APIResponse = await fetch('../.netlify/functions/albums', {
-    method: 'POST',
+    method: 'POST', 
     body: JSON.stringify({
       artist,
     })
