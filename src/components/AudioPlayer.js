@@ -177,7 +177,7 @@ const AudioPlayer = () => {
           width: '100%',
           maxWidth: '500px',
           position: 'fixed',
-          top: 'calc(100vh - 128px)',
+          top: 'calc(100% - 128px)',
           zIndex: 100,
           left: 'calc((100vw / 2) - 250px)',
           '@media (max-Width: 539px)': {
