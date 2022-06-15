@@ -177,7 +177,7 @@ const AudioPlayer = () => {
           width: '100%',
           maxWidth: '500px',
           position: 'fixed',
-          top: 'calc(100% - 128px)',
+          bottom: '0%',
           zIndex: 100,
           left: 'calc((100vw / 2) - 250px)',
           '@media (max-Width: 539px)': {
@@ -298,6 +298,7 @@ const AudioPlayer = () => {
         <Typography
           gutterBottom
           variant="body"
+          textAlign="center"
         >
           { trackName }
         </Typography>
