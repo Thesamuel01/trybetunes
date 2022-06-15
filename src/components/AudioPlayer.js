@@ -51,7 +51,7 @@ const AudioPlayer = () => {
     progressBar.current.style.setProperty('--seek-before-width', '0%');
     progressBar.current.value = 0;
     setCurrentTime(progressBar.current.value);
-
+    console.log(playingRef.current);
     if (playingRef.current) {
       const isFirstOrLastSong = songIndex === 0
         || songIndex === songsToBePlayed.length - 1;
@@ -61,12 +61,13 @@ const AudioPlayer = () => {
       audioPlayer.current.play();
       animationRef.current = requestAnimationFrame(whilePlaying);
     } else {
+      console.log('aquio nao');
       audioPlayer.current.load();
     }
   };
 
   const changeSong = async (action) => {
-    if (!isPlaying) {
+    if (!playingRef.current) {
       dispatch(playMusic(!isPlaying));
       playingRef.current = !playingRef.current;
     }
