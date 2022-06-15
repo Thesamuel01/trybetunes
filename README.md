@@ -6,7 +6,7 @@ Na Aplicação é possivel:
 
  - Colocar as informações de Login, onde serão armazenadas simulando uma requisição para o banco de dados.
  - Buscar pelo nome do artistas e receber os albums daquela busca.
- - Escutar e controlar a prévia das músicas do album procurado.
+ - Escutar e controlar uma prévia das músicas do album procurado.
  - Adicionar músicas aos favoritos
  - Acessar as informações de perfil, podendo altera-las.
  - Alterar o tema da aplicação para ***dark mode***.
@@ -18,3 +18,7 @@ Principais tecnologias utilizadas:
 - React Router
 - Redux Toolkit
 - Material UI
+- Netlify
+
+## Deploy
+Link para o Deploy da aplicação: [TrybeTunes](https://trybetunesapp.netlify.app/)
