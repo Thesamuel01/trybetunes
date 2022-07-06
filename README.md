@@ -10,7 +10,7 @@ to make the requests and get artist info, so user is able to play a short song p
 - [Summary](#summary)
 - [Context](#context)
 - [Technologies and Tools Used](#technologies-and-tools-used)
-- [Installing, running and testing the app](#installing-running-and-testing-the-app)
+- [Installing and running the app](#installing-and-running-the-app)
 - [Notes](#notes)
   - [Git and Commits](#git-github-and-commit-history)
 - [Lint](#lint)
@@ -34,7 +34,7 @@ This project used the following technologies and tools:
   * __Material UI__ | [Component Level Styles](https://mui.com/pt/material-ui/getting-started/overview/) 
 
 
-# Installing, running and testing the app
+# Installing and running the app
 ### Download the app
 ```
 git clone git@github.com:Thesamuel01/trybetunes.git
