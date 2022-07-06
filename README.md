@@ -1,24 +1,62 @@
-# TrybeTunes
+# Welcome to TrybeTunes
+This is a project developed at [Trybe's](https://www.betrybe.com/) Frontend Module.
 
-O projeto Trybetunes cria uma versão simplificada de um aplicativo de músicas. Utilizando a API do [iTunes](https://developer.apple.com/library/archive/documentation/AudioVideo/Conceptual/iTuneSearchAPI/index.html#//apple_ref/doc/uid/TP40017632-CH3-SW1),
-a aplicação realiza a requisição para a API e busca pelas informações do artista pesquisado e consegue reproduzir uma pequena prévia das músicas trazidas pela API.
-Na Aplicação é possivel:
+Trybetunes is a simplified version of a music player application. Using the [iTunes API](https://developer.apple.com/library/archive/documentation/AudioVideo/Conceptual/iTuneSearchAPI/index.html#//apple_ref/doc/uid/TP40017632-CH3-SW1),
+to make the requests and get artist info, so user is able to play a short song preview received from API.
 
- - Colocar as informações de Login, onde serão armazenadas simulando uma requisição para o banco de dados.
- - Buscar pelo nome do artistas e receber os albums daquela busca.
- - Escutar e controlar uma prévia das músicas do album procurado.
- - Adicionar músicas aos favoritos
- - Acessar as informações de perfil, podendo altera-las.
- - Alterar o tema da aplicação para ***dark mode***.
 
-*A pasta services foi disponibilizado pela Trybe para que houvesse a simulação das requisições à API*.
+# Summary
+- [Welcome to TrybeTunes](#welcome-to-trybetunes)
+- [Summary](#summary)
+- [Context](#context)
+- [Technologies and Tools Used](#technologies-and-tools-used)
+- [Installing, running and testing the app](#installing-running-and-testing-the-app)
+- [Notes](#notes)
+  - [Git and Commits](#git-github-and-commit-history)
+- [Lint](#lint)
+- [Preview](#preview)
 
-Principais tecnologias utilizadas:
-- React
-- React Router
-- Redux Toolkit
-- Material UI
-- Netlify
 
-## Deploy
-Link para o Deploy da aplicação: [TrybeTunes](https://trybetunesapp.netlify.app/)
+# Context
+__TrybeTunes App__ allows user:
+ * Search by artist's name and receive their albums.
+ * Listen and control a song preview.
+ * Add and remove favorite songs
+ * Access profile information and be able to change it.
+ * Switch application theme to ***dark mode*** or ***light mode***.
+
+*The service's folder was given by Trybe so the API request could be executed*.
+
+# Technologies and Tools Used
+This project used the following technologies and tools:
+  * __React__ | [Componetization](https://reactjs.org/docs/thinking-in-react.html), [Router](https://blog.pshrmn.com/simple-react-router-v4-tutorial/)
+  * __Redux Toolkit__ | [State Management](https://redux-toolkit.js.org/introduction/getting-started)
+  * __Material UI__ | [Component Level Styles](https://mui.com/pt/material-ui/getting-started/overview/) 
+
+
+# Installing, running and testing the app
+### Download the app
+```
+git clone git@github.com:Thesamuel01/trybetunes.git
+```
+### Install dependencies
+```
+cd trybetunes
+npm install
+```
+### Run the application
+```
+cd trybetunes
+npm start
+```
+
+# Notes
+## Git, GitHub and Commit History
+- This project used the [Conventional Commits specification](https://www.conventionalcommits.org/en/v1.0.0/) with some types from [Angular convention](https://github.com/angular/angular/blob/22b96b9/CONTRIBUTING.md#-commit-message-guidelines).
+
+## Lint
+- The project was developed following the Clean Code standards specified by [Trybe's Lint](https://github.com/betrybe/eslint-config-trybe).
+
+
+# Preview
+
